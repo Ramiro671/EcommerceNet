@@ -1,0 +1,29 @@
+/* Estilos globales de EcommerceNet */
+:root {
+  --color-primario: #1a1a2e;
+  --color-acento: #1d9e75;
+  --color-error: #e24b4a;
+  --color-borde: #e5e7eb;
+  --color-fondo: #f9fafb;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  outline: none;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--color-acento) !important;
+}
