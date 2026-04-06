@@ -1,0 +1,219 @@
+### ============================================================
+### EcommerceNet API — Archivo de pruebas de endpoints
+### Instala la extensión "REST Client" en VS Code para ejecutarlos.
+### Haz clic en "Send Request" encima de cada petición.
+### ============================================================
+
+@baseUrl = http://localhost:5000
+
+### ============================================================
+### AUTH — Endpoints públicos (no requieren token)
+### ============================================================
+
+### Registrar usuario cliente
+POST {{baseUrl}}/api/auth/registrar
+Content-Type: application/json
+
+{
+  "nombre": "Ramiro Dev",
+  "email": "ramiro@dacodes.com",
+  "password": "MiPassword123!"
+}
+
+###
+
+### Registrar administrador
+POST {{baseUrl}}/api/auth/registrar
+Content-Type: application/json
+
+{
+  "nombre": "Admin Tienda",
+  "email": "admin@ecommerce.com",
+  "password": "Admin123!"
+}
+
+###
+
+### Login (copiar el token de la respuesta y pegarlo en @token abajo)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "ramiro@dacodes.com",
+  "password": "MiPassword123!"
+}
+
+### ============================================================
+### VARIABLE — pegar aquí el token copiado del login
+### ============================================================
+
+@token = PEGAR_TOKEN_AQUI
+
+### ============================================================
+### PRODUCTOS — Endpoints públicos (no requieren token)
+### ============================================================
+
+### Listar todos los productos activos
+GET {{baseUrl}}/api/productos
+
+###
+
+### Obtener producto por ID
+GET {{baseUrl}}/api/productos/1
+
+###
+
+### Buscar productos por nombre
+GET {{baseUrl}}/api/productos/buscar?termino=laptop
+
+###
+
+### Productos por categoría
+GET {{baseUrl}}/api/productos/categoria/1
+
+### ============================================================
+### PRODUCTOS — Endpoints de Admin (requieren JWT con rol Admin)
+### ============================================================
+
+### Crear producto
+POST {{baseUrl}}/api/productos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Laptop Gaming Pro",
+  "descripcion": "Laptop para desarrollo y gaming, 16GB RAM, RTX 4070",
+  "precio": 25999.99,
+  "stock": 15,
+  "imagenUrl": "https://ejemplo.com/laptop.jpg",
+  "categoriaId": 1
+}
+
+###
+
+### Actualizar producto
+PUT {{baseUrl}}/api/productos/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Laptop Gaming Pro (Actualizada)",
+  "descripcion": "Ahora con 32GB RAM",
+  "precio": 29999.99,
+  "stock": 10,
+  "imagenUrl": "https://ejemplo.com/laptop-v2.jpg",
+  "categoriaId": 1
+}
+
+###
+
+### Eliminar producto
+DELETE {{baseUrl}}/api/productos/1
+Authorization: Bearer {{token}}
+
+### ============================================================
+### CATEGORÍAS
+### ============================================================
+
+### Listar categorías
+GET {{baseUrl}}/api/categorias
+
+###
+
+### Crear categoría (Admin)
+POST {{baseUrl}}/api/categorias
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Laptops",
+  "descripcion": "Computadoras portátiles para trabajo y gaming"
+}
+
+### ============================================================
+### CARRITO — requiere JWT de cualquier usuario
+### ============================================================
+
+### Ver mi carrito
+GET {{baseUrl}}/api/carrito
+Authorization: Bearer {{token}}
+
+###
+
+### Agregar producto al carrito
+POST {{baseUrl}}/api/carrito/agregar
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "productoId": 1,
+  "cantidad": 2
+}
+
+###
+
+### Agregar otro producto
+POST {{baseUrl}}/api/carrito/agregar
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "productoId": 2,
+  "cantidad": 1
+}
+
+###
+
+### Actualizar cantidad de un producto
+PUT {{baseUrl}}/api/carrito/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "cantidad": 5
+}
+
+###
+
+### Quitar producto del carrito
+DELETE {{baseUrl}}/api/carrito/2
+Authorization: Bearer {{token}}
+
+###
+
+### Vaciar el carrito completo
+DELETE {{baseUrl}}/api/carrito
+Authorization: Bearer {{token}}
+
+### ============================================================
+### CHECKOUT — procesar la compra
+### ============================================================
+
+### Procesar compra (requiere productos en el carrito)
+POST {{baseUrl}}/api/carrito/checkout
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "direccionEnvio": "Calle 50 #200, Col. Centro, Merida, Yucatan, CP 97000"
+}
+
+### ============================================================
+### ÓRDENES — requiere JWT
+### ============================================================
+
+### Listar mis órdenes
+GET {{baseUrl}}/api/ordenes
+Authorization: Bearer {{token}}
+
+###
+
+### Ver detalle de una orden
+GET {{baseUrl}}/api/ordenes/1
+Authorization: Bearer {{token}}
+
+###
+
+### Cancelar una orden
+PUT {{baseUrl}}/api/ordenes/1/cancelar
+Authorization: Bearer {{token}}

@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/EcommerceNet.API/EcommerceNet.API.csproj" />
+    <Project Path="src/EcommerceNet.Core/EcommerceNet.Core.csproj" />
+    <Project Path="src/EcommerceNet.Data/EcommerceNet.Data.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/EcommerceNet.Tests/EcommerceNet.Tests.csproj" />
+  </Folder>
+</Solution>

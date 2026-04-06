@@ -1,0 +1,17 @@
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\bin\Debug\net10.0\EcommerceNet.Data.deps.json
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\bin\Debug\net10.0\EcommerceNet.Data.dll
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\bin\Debug\net10.0\EcommerceNet.Data.pdb
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\bin\Debug\net10.0\EcommerceNet.Core.dll
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\bin\Debug\net10.0\EcommerceNet.Core.pdb
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\obj\Debug\net10.0\EcommerceNet.Data.csproj.AssemblyReference.cache
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\obj\Debug\net10.0\EcommerceNet.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\obj\Debug\net10.0\EcommerceNet.Data.AssemblyInfoInputs.cache
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\obj\Debug\net10.0\EcommerceNet.Data.AssemblyInfo.cs
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\obj\Debug\net10.0\EcommerceNet.Data.csproj.CoreCompileInputs.cache
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\obj\Debug\net10.0\Ecommerc.55C6749D.Up2Date
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\obj\Debug\net10.0\EcommerceNet.Data.dll
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\obj\Debug\net10.0\refint\EcommerceNet.Data.dll
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\obj\Debug\net10.0\EcommerceNet.Data.pdb
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\obj\Debug\net10.0\ref\EcommerceNet.Data.dll
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\bin\Debug\net10.0\EcommerceNet.Data.runtimeconfig.json
+C:\Users\ramir\Source\repos\EcommerceNet\src\EcommerceNet.Data\obj\Debug\net10.0\EcommerceNet.Data.genruntimeconfig.cache

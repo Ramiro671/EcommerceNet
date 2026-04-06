@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet new:*)",
+      "Bash(dotnet sln:*)",
+      "Bash(rm c:/Users/ramir/Source/repos/EcommerceNet/src/EcommerceNet.Core/Class1.cs)",
+      "Bash(rm c:/Users/ramir/Source/repos/EcommerceNet/src/EcommerceNet.Data/Class1.cs)",
+      "Bash(mkdir -p c:/Users/ramir/Source/repos/EcommerceNet/src/EcommerceNet.Core/Enums c:/Users/ramir/Source/repos/EcommerceNet/src/EcommerceNet.Core/Entidades c:/Users/ramir/Source/repos/EcommerceNet/src/EcommerceNet.Core/Interfaces c:/Users/ramir/Source/repos/EcommerceNet/src/EcommerceNet.Core/DTOs c:/Users/ramir/Source/repos/EcommerceNet/src/EcommerceNet.Core/Servicios)",
+      "Bash(mkdir -p c:/Users/ramir/Source/repos/EcommerceNet/tests/EcommerceNet.Tests/Entidades)"
+    ]
+  }
+}
