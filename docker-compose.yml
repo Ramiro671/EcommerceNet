@@ -1,0 +1,50 @@
+version: '3.8'
+
+# ============================================================
+# docker-compose.yml — EcommerceNet
+# Levanta la API .NET + SQL Server juntos para desarrollo local
+# Uso: docker-compose up --build
+# ============================================================
+
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: src/EcommerceNet.API/Dockerfile
+    ports:
+      - "5000:80"      # localhost:5000 → contenedor:80
+    environment:
+      # Connection string apuntando al servicio 'sqlserver' (nombre del servicio = hostname en Docker)
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=EcommerceNetDB;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;MultipleActiveResultSets=true
+      # Configuración JWT (mismos valores que appsettings.json)
+      - Jwt__Key=EstaEsMiClaveSecretaSuperSeguraDe256BitsParaJWT!!
+      - Jwt__Issuer=EcommerceNet.API
+      - Jwt__Audience=EcommerceNet.Web
+      # MongoDB (opcional para historial de búsquedas)
+      - MongoDB__ConnectionString=mongodb://mongo:27017
+      - MongoDB__DatabaseName=EcommerceNetDB
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - sqlserver    # espera a que sqlserver esté corriendo antes de iniciar
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong!Passw0rd
+    ports:
+      - "1433:1433"   # expone SQL Server al host para herramientas como SSMS
+    volumes:
+      - sqlserver-data:/var/opt/mssql   # persistencia de datos entre reinicios
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  sqlserver-data:    # volumen nombrado para SQL Server
+  mongo-data:        # volumen nombrado para MongoDB

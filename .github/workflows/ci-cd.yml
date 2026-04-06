@@ -1,0 +1,69 @@
+name: CI/CD EcommerceNet
+
+on:
+  push:
+    branches: [ main, desarrollo ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend:
+    name: Backend (.NET)
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    - name: Configurar .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restaurar dependencias
+      run: dotnet restore
+
+    - name: Compilar solución
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Ejecutar pruebas
+      run: dotnet test --no-build --configuration Release --verbosity normal
+
+    - name: Publicar API
+      if: github.ref == 'refs/heads/main'
+      run: dotnet publish src/EcommerceNet.API -c Release -o ./publish
+
+    - name: Subir artefacto de API
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v4
+      with:
+        name: api-publish
+        path: ./publish
+
+  frontend:
+    name: Frontend (Vue.js)
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Instalar dependencias
+      working-directory: src/EcommerceNet.Web
+      run: npm ci
+
+    - name: Compilar frontend
+      working-directory: src/EcommerceNet.Web
+      run: npm run build
+
+    - name: Subir artefacto de frontend
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-dist
+        path: src/EcommerceNet.Web/dist

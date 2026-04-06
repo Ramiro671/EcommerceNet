@@ -1,79 +1,212 @@
-# EcommerceNet — Tienda Fullstack .NET & Vue.js
+# EcommerceNet
 
-> Proyecto de portafolio para la vacante **Senior Fullstack .NET & Vue.js Developer** en **portafolio profesional**.
+Tienda online fullstack construida para demostrar dominio del stack requerido por la vacante **Senior Fullstack .NET & Vue.js Developer en portafolio profesional**.
+
+## Demo en vivo
+
+| Recurso | URL |
+|---------|-----|
+| API (Swagger) | https://ecommercenet-env.elasticbeanstalk.com/swagger |
+| Frontend (Vue.js) | http://ecommercenet-frontend.s3-website-us-east-1.amazonaws.com |
+| Usuario demo | demo@ecommercenet.com / Demo123! |
+| Admin demo | admin@ecommercenet.com / Admin123! |
+
+> Desplegado en AWS: API en Elastic Beanstalk con Docker, frontend estático en S3.
+
+---
+
+## Tecnologías
+
+| Capa | Tecnología | Versión |
+|------|-----------|---------|
+| Backend | ASP.NET Core Web API | 8.0 |
+| ORM | Entity Framework Core | 10.0.5 |
+| BD Relacional | SQL Server LocalDB | 2022 |
+| BD NoSQL | MongoDB | 7.x |
+| Auth | JWT Bearer Tokens | — |
+| Frontend | Vue.js 3 + Vite | 3.4 / 5.3 |
+| Estado global | Pinia | 2.1.7 |
+| Router | Vue Router | 4.3.3 |
+| HTTP | Axios | 1.7.2 |
+| Frontend Legacy | jQuery | 3.7.1 |
+| Tests | xUnit | 2.9.x |
+| CI/CD | GitHub Actions | — |
+| Contenedores | Docker + docker-compose | — |
+| Cloud | AWS (Elastic Beanstalk + S3) | — |
+
+---
+
+## Arquitectura
+
+```
+[Vue.js 3 SPA]  ←──────────────→  [ASP.NET Core API]  ←──→  [SQL Server]
+      ↑                                     ↑                       ↑
+   Pinia Store                      JWT + Swagger              EF Core
+   Vue Router                       Middleware                 Migraciones
+   Axios + JWT                      Clean Architecture         Seed Data
+                                           ↓
+                                     [MongoDB]
+                                  (historial búsquedas)
+
+AWS:
+   S3 + CloudFront → [Vue.js SPA]
+   Elastic Beanstalk → [Docker: ASP.NET Core API]
+   RDS SQL Server Express
+```
+
+### Capas de Clean Architecture
+
+```
+EcommerceNet.sln
+├── EcommerceNet.Core    ← Capa 0: entidades, interfaces, DTOs — SIN dependencias externas
+├── EcommerceNet.Data    ← Capa 1: EF Core, repositorios, MongoDB — depende de Core
+├── EcommerceNet.API     ← Capa 2: controladores, JWT, Swagger — depende de Data
+└── EcommerceNet.Web     ← Capa 3: Vue.js 3 SPA (Node.js independiente, consume API via HTTP)
+```
+
+---
+
+## Ejecución local
+
+### Prerequisitos
+
+- [.NET SDK 8.0+](https://dotnet.microsoft.com/download)
+- [SQL Server LocalDB](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb)
+- [Node.js 20+](https://nodejs.org/)
+- [MongoDB](https://www.mongodb.com/try/download/community) (opcional)
+
+### Backend
+
+```bash
+cd src/EcommerceNet.API
+dotnet run
+# API: http://localhost:5152
+# Swagger: http://localhost:5152/swagger
+```
+
+La primera ejecución crea la BD automáticamente con 5 categorías, 12 productos y 1 admin.
+
+### Frontend
+
+```bash
+cd src/EcommerceNet.Web
+npm install
+npm run dev
+# App: http://localhost:5173
+# jQuery legacy: http://localhost:5173/legacy.html
+```
+
+### Pruebas
+
+```bash
+dotnet test
+# Resultado esperado: Passed! 23 of 23 tests
+```
+
+---
+
+## Ejecución con Docker
+
+```bash
+# Levanta API + SQL Server + MongoDB juntos
+docker-compose up --build
+# API: http://localhost:5000/swagger
+
+# Detener
+docker-compose down
+
+# Detener y eliminar datos
+docker-compose down -v
+```
+
+---
+
+## Endpoints de la API
+
+### Productos (público)
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/productos` | Listar todos los productos activos |
+| GET | `/api/productos/{id}` | Detalle de un producto |
+| GET | `/api/productos/buscar?termino=x` | Búsqueda |
+| GET | `/api/productos/categoria/{id}` | Por categoría |
+
+### Productos (Admin)
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| POST | `/api/productos` | Crear producto |
+| PUT | `/api/productos/{id}` | Actualizar |
+| DELETE | `/api/productos/{id}` | Eliminar |
+
+### Carrito (autenticado)
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/carrito` | Ver carrito |
+| POST | `/api/carrito/agregar` | Agregar producto |
+| PUT | `/api/carrito/{productoId}` | Actualizar cantidad |
+| DELETE | `/api/carrito/{productoId}` | Quitar producto |
+| DELETE | `/api/carrito` | Vaciar |
+| POST | `/api/carrito/checkout` | Procesar compra |
+
+### Órdenes (autenticado)
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/ordenes` | Mis órdenes |
+| GET | `/api/ordenes/{id}` | Detalle |
+| PUT | `/api/ordenes/{id}/cancelar` | Cancelar |
+
+### Auth (público)
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| POST | `/api/auth/registrar` | Crear cuenta → retorna JWT |
+| POST | `/api/auth/login` | Iniciar sesión → retorna JWT |
+
+---
+
+## CI/CD con GitHub Actions
+
+El pipeline se dispara en cada push a `main` o `desarrollo`:
+
+```
+push a main/desarrollo
+         ↓
+┌────────────────────┐    ┌─────────────────────┐
+│  Job: backend       │    │  Job: frontend        │
+│  dotnet restore     │    │  npm ci               │
+│  dotnet build       │    │  npm run build        │
+│  dotnet test (23)   │    │  upload artefact      │
+│  dotnet publish     │    └─────────────────────┘
+│  upload artefact    │
+└────────────────────┘
+```
+
+---
+
+## Historial de desarrollo (5 días)
+
+| Día | Qué se construyó |
+|-----|-----------------|
+| **1** | Entidades, interfaces, DTOs, CarritoServicio, 23 tests xUnit |
+| **2** | 5 controladores, 18 endpoints REST, JWT, Swagger, middleware |
+| **3** | EF Core, 5 repositorios, migraciones, SQL Server, MongoDB |
+| **4** | Vue.js 3 SPA: 3 stores Pinia, 7 vistas, jQuery legacy |
+| **5** | Docker, CI/CD GitHub Actions, README, deploy AWS |
+
+---
 
 ## Sobre el proyecto
 
-Tienda en línea con catálogo de productos, carrito de compras, checkout y autenticación.
-Diseñada siguiendo los principios de los Studios de portafolio profesional:
+portafolio profesional es una empresa de tecnología con modelo de **Studios especializados**:
+- **Software Engineering & QA Studio** → Clean Architecture + Launch Pod
+- **Cloud & DevOps Studio** → AWS Partner + AWS Migration Pod
 
-- **Software Engineering & QA Studio** → Clean Architecture, pruebas unitarias, código revisable
-- **Cloud & DevOps Studio** → AWS (portafolio profesional es AWS Partner), GitHub Actions CI/CD
-- **Launch Pod** → MVP funcional con calidad embebida desde el día uno
+Este proyecto demuestra cada competencia del stack requerido: C#/.NET, Vue.js 3, SQL Server, MongoDB, JWT, Docker, y CI/CD en AWS.
 
-## Funcionalidades
+---
 
-- Catálogo de productos con categorías y búsqueda
-- Carrito de compras: agregar, quitar, actualizar cantidades
-- Checkout: genera órdenes, valida stock, reduce inventario
-- Autenticación JWT con roles (admin / cliente)
-- Panel admin: CRUD de productos y categorías
-
-## Stack técnico (alineado a la vacante)
-
-| Capa | Tecnología |
-|------|-----------|
-| Backend | ASP.NET Core 8 Web API |
-| ORM | Entity Framework Core 8 |
-| BD Relacional | SQL Server |
-| BD NoSQL | MongoDB (historial de búsquedas) |
-| Frontend | Vue.js 3 (Composition API + Pinia) |
-| Frontend Legacy | jQuery 3.x |
-| Auth | JWT Bearer |
-| Cloud | AWS Free Tier (EC2/EB + RDS) |
-| CI/CD | GitHub Actions |
-| Tests | xUnit |
-
-## Estructura
-
-```
-EcommerceNet/
-├── src/
-│   ├── EcommerceNet.Core/       # Entidades, interfaces, DTOs, servicios
-│   ├── EcommerceNet.Data/       # EF Core, repositorios, MongoDB
-│   ├── EcommerceNet.API/        # Controladores, middleware, JWT
-│   └── EcommerceNet.Web/        # Vue.js 3 + jQuery legacy
-├── tests/
-│   └── EcommerceNet.Tests/      # Pruebas unitarias
-├── docs/                        # Guías de estudio por día
-├── CLAUDE.md                    # Reglas de arquitectura
-└── README.md
-```
-
-## Plan de 5 días
-
-| Día | Tema | Rama |
-|-----|------|------|
-| 1 | C#, Clean Architecture, entidades y tests | `dia-01/fundamentos-csharp` |
-| 2 | ASP.NET Core API, JWT, Swagger | `dia-02/aspnet-api` |
-| 3 | SQL Server + EF Core + MongoDB | `dia-03/datos` |
-| 4 | Vue.js 3 + jQuery legacy | `dia-04/frontend` |
-| 5 | AWS deploy, CI/CD, prep entrevista | `dia-05/deploy-aws` |
-
-## Ejecutar localmente
-
-```powershell
-# Backend
-cd src/EcommerceNet.API
-dotnet restore; dotnet run
-
-# Frontend
-cd src/EcommerceNet.Web
-npm install; npm run dev
-```
-
-## Inteligencia de entrevista (portafolio profesional - Glassdoor)
-
-- Proceso: 3 rondas (RH → técnica con senior/líder → cliente)
-- Envían prueba técnica de código
-- Preguntan: frameworks JS, experiencia AWS, nivel de inglés, bases de datos
+Licencia MIT — Proyecto de demostración técnica para proceso de entrevista.
