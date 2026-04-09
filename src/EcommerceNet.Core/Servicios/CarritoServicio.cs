@@ -35,6 +35,8 @@ public class CarritoServicio : ICarritoServicio
             return Resultado<CarritoDto>.Error($"Stock insuficiente. Disponible: {producto.Stock}");
 
         var carrito = await _uow.Carritos.ObtenerPorUsuarioAsync(usuarioId);
+        bool esNuevo = carrito == null;
+
         if (carrito == null)
         {
             carrito = new Carrito { UsuarioId = usuarioId };
@@ -42,7 +44,13 @@ public class CarritoServicio : ICarritoServicio
         }
 
         carrito.AgregarProducto(producto, dto.Cantidad);
-        _uow.Carritos.Actualizar(carrito);
+
+        // No llamar Actualizar en un carrito nuevo: su Id es temporal (0) y EF Core
+        // ya lo tiene en estado Added. Llamar Update() causaría el error
+        // "has a temporary value while attempting to change state to Modified".
+        if (!esNuevo)
+            _uow.Carritos.Actualizar(carrito);
+
         await _uow.GuardarCambiosAsync();
 
         return Resultado<CarritoDto>.Ok(MapearCarrito(carrito), $"'{producto.Nombre}' agregado");
