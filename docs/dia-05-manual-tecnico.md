@@ -200,18 +200,23 @@ Con multi-stage, la imagen de producción es **4x más pequeña** y no contiene 
 
 ### 4.2 Archivo: `src/EcommerceNet.API/Dockerfile`
 
+> **Actualización post-deploy:** Durante el deploy en AWS Elastic Beanstalk se descubrió que
+> el SDK debe ser `10.0` (no `8.0`), ya que el proyecto usa `net10.0` y el formato `.slnx`
+> solo es soportado por SDK 9+ (introducido en .NET 9). Ambos Dockerfiles fueron actualizados.
+
 ```dockerfile
 # ============================================================
 # Dockerfile — EcommerceNet.API
 # Multi-stage build: compilar con SDK, ejecutar con runtime ligero
 # ============================================================
 
-# Etapa 1: COMPILAR con el SDK completo (.NET 8)
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# Etapa 1: COMPILAR con el SDK completo (.NET 10)
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /app
 
 # Copiar archivos de proyecto primero (para cachear la capa de restore)
-COPY EcommerceNet.sln .
+# IMPORTANTE: el archivo de solución es .slnx (formato .NET 9+), no .sln
+COPY EcommerceNet.slnx .
 COPY src/EcommerceNet.Core/EcommerceNet.Core.csproj src/EcommerceNet.Core/
 COPY src/EcommerceNet.Data/EcommerceNet.Data.csproj src/EcommerceNet.Data/
 COPY src/EcommerceNet.API/EcommerceNet.API.csproj src/EcommerceNet.API/
@@ -223,9 +228,9 @@ COPY . .
 RUN dotnet publish src/EcommerceNet.API -c Release -o /publish
 
 # ============================================================
-# Etapa 2: EJECUTAR con solo el ASP.NET runtime (imagen ligera)
+# Etapa 2: EJECUTAR con solo el ASP.NET runtime (~200 MB)
 # ============================================================
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /publish .
 
@@ -379,12 +384,18 @@ src/EcommerceNet.Web/src/router/
 
 ## 8. Análisis línea por línea del Dockerfile
 
+> **Nota:** El Dockerfile original usaba `sdk:8.0` y `aspnet:8.0`. Durante el deploy en AWS se
+> descubrió que el proyecto usa `net10.0` (paquetes en versión `10.0.5`) y el formato `.slnx`
+> que requiere SDK 10+. Ambos Dockerfiles fueron actualizados. El análisis a continuación
+> refleja la versión FINAL que funcionó correctamente en Elastic Beanstalk.
+
 ```dockerfile
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ```
-- `FROM` — imagen base. `dotnet/sdk:8.0` incluye el compilador de C#, herramientas de NuGet, dotnet CLI (~800 MB)
+- `FROM` — imagen base. `dotnet/sdk:10.0` incluye el compilador de C#, herramientas de NuGet, dotnet CLI (~800 MB)
 - `AS build` — nombra esta etapa para referenciarla en la etapa 2 con `COPY --from=build`
 - Viene de Microsoft Container Registry (`mcr.microsoft.com`)
+- **Por qué 10.0 y no 8.0:** El proyecto usa `<TargetFramework>net10.0</TargetFramework>` y paquetes en versión `10.0.5`. El SDK 8 no soporta el formato `.slnx` (introducido en .NET 9+).
 
 ```dockerfile
 WORKDIR /app
@@ -393,7 +404,7 @@ WORKDIR /app
 - Todos los `COPY` y `RUN` siguientes operan desde `/app`
 
 ```dockerfile
-COPY EcommerceNet.sln .
+COPY EcommerceNet.slnx .
 COPY src/EcommerceNet.Core/EcommerceNet.Core.csproj src/EcommerceNet.Core/
 COPY src/EcommerceNet.Data/EcommerceNet.Data.csproj src/EcommerceNet.Data/
 COPY src/EcommerceNet.API/EcommerceNet.API.csproj src/EcommerceNet.API/
@@ -402,6 +413,7 @@ COPY tests/EcommerceNet.Tests/EcommerceNet.Tests.csproj tests/EcommerceNet.Tests
 - **Truco de caché:** Copia solo los archivos `.csproj` y la solución antes del código fuente
 - Docker cachea capas. Si no cambió ningún `.csproj`, reutiliza la capa del `restore` (~60s → ~3s)
 - El código `.cs` se copia después — cuando cambia, invalida solo las capas siguientes, no el restore
+- **`.slnx` no `.sln`:** El formato `.slnx` es el nuevo estándar desde .NET 9. `dotnet restore` con SDK 8 lo rechaza.
 
 ```dockerfile
 RUN dotnet restore
@@ -423,7 +435,7 @@ RUN dotnet publish src/EcommerceNet.API -c Release -o /publish
 - Genera: `EcommerceNet.API.dll`, DLLs de dependencias, `appsettings.json`
 
 ```dockerfile
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 ```
 - **Nueva imagen base:** solo el runtime de ASP.NET Core (~200 MB) — sin compilador, sin SDK
 - La etapa 1 (`build`) se descarta — sus capas no van en la imagen final
@@ -711,14 +723,69 @@ npm run build
 # ✓ built in 1.43s
 ```
 
+### Deploy real en AWS (ejecutado 2026-04-09)
+
+Después del código base del Día 5, se ejecutó el deploy completo en AWS:
+
+**Archivos creados durante el deploy:**
+
+```
+Dockerfile                                    — Dockerfile raíz para Elastic Beanstalk (sdk:10.0)
+.ebignore                                     — Excluye docker-compose.yml del paquete EB
+src/EcommerceNet.API/appsettings.Production.json — UseInMemoryDatabase=true para AWS demo
+src/EcommerceNet.Web/.env.production          — VITE_API_URL con URL real de EB
+bucket-policy.json                            — Política de acceso público para S3
+```
+
+**Archivos modificados durante el deploy:**
+
+```
+src/EcommerceNet.API/Dockerfile              — sdk:8.0 → sdk:10.0, .sln → .slnx
+src/EcommerceNet.API/Program.cs              — CORS con URL S3, InMemory DB, Swagger en todos los entornos
+src/EcommerceNet.Web/src/services/api.js    — import.meta.env.VITE_API_URL para producción
+README.md                                    — URLs reales de producción
+```
+
+**Comandos del deploy (en orden):**
+
+```powershell
+# Backend: instalar InMemory y crear config de producción
+dotnet add src/EcommerceNet.API package Microsoft.EntityFrameworkCore.InMemory
+
+# EB: inicializar y crear entorno (3 intentos hasta resolver todos los errores)
+eb init EcommerceNet --platform Docker --region us-east-1
+eb create ecommercenet-api --single --instance-type t3.micro --timeout 20
+
+# EB: variables de entorno
+eb setenv Jwt__Key="..." Jwt__Issuer=EcommerceNet.API Jwt__Audience=EcommerceNet.Web ASPNETCORE_ENVIRONMENT=Production UseInMemoryDatabase=true
+
+# S3: frontend
+npm run build  # desde src/EcommerceNet.Web
+aws s3 mb s3://ecommercenet-ramiro671 --region us-east-1
+aws s3api put-public-access-block --bucket ecommercenet-ramiro671 --public-access-block-configuration "BlockPublicAcls=false,..."
+aws s3 website s3://ecommercenet-ramiro671 --index-document index.html --error-document index.html
+aws s3api put-bucket-policy --bucket ecommercenet-ramiro671 --policy file://bucket-policy.json
+aws s3 sync src/EcommerceNet.Web/dist/ s3://ecommercenet-ramiro671
+```
+
+**URLs de producción:**
+
+| Recurso | URL |
+|---------|-----|
+| API (Swagger) | http://ecommercenet-api.eba-fxkridvp.us-east-1.elasticbeanstalk.com/swagger |
+| Frontend | http://ecommercenet-ramiro671.s3-website-us-east-1.amazonaws.com |
+| Health EB | Green ✅ |
+
 ### Commits del Día 5
 
 ```
+3efbfb0 feat: deploy completo — API en Elastic Beanstalk, frontend en S3
+f30379d feat: soporte InMemory DB para producción en AWS, Dockerfile en raíz para Elastic Beanstalk
+74ff410 fix: corregir EcommerceNet.sln → slnx en Dockerfiles, agregar .ebignore para EB
+2470e85 fix: usar SDK .NET 10 en Dockerfiles — proyecto usa net10.0, no net8.0
+1919b32 docs: guía completa de deploy AWS, manual técnico y clase del día 5
 32bec97 feat: panel admin con gestión de productos y categorías, implementar CategoriasController con EF Core
 14c009d fix: no llamar Actualizar en carrito nuevo para evitar error de Id temporal en EF Core
-a2b6bd6 fix: remover bin/ y obj/ del índice de git (ya estaban en .gitignore)
-86c9857 docs: agregar documentación completa del Día 5 (Docker, CI/CD, AWS, entrevista)
-cdbb8d2 feat: Docker, CI/CD con GitHub Actions, README profesional, docs día 4
 ```
 
 ### Estado de los builds
@@ -729,6 +796,8 @@ cdbb8d2 feat: Docker, CI/CD con GitHub Actions, README profesional, docs día 4
 | `dotnet test` | ✅ 23/23 pasando |
 | `npm run build` | ✅ 103 módulos, 0 errores |
 | GitHub Actions | ✅ Backend y Frontend jobs pasando |
+| Elastic Beanstalk | ✅ Health: Green |
+| S3 Frontend | ✅ HTTP 200 |
 
 ---
 

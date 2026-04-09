@@ -17,7 +17,7 @@ requerido por la vacante Senior Fullstack .NET & Vue.js Developer en DaCodes.
 ## Arquitectura: Clean Architecture
 
 ```
-EcommerceNet.sln
+EcommerceNet.slnx
 ├── src/
 │   ├── EcommerceNet.Core/         # Capa 0: Entidades, interfaces, DTOs, servicios de negocio
 │   ├── EcommerceNet.Data/         # Capa 1: EF Core, repositorios, MongoDB, migraciones
@@ -45,8 +45,8 @@ EcommerceNet.sln
 
 | Capa | Tecnología | Notas |
 |------|-----------|-------|
-| Backend | ASP.NET Core 8 Web API | Controladores con atributos `[ApiController]` |
-| ORM | Entity Framework Core 8 | Code First, Fluent API, migraciones |
+| Backend | ASP.NET Core Web API (.NET 10) | Controladores con atributos `[ApiController]` |
+| ORM | Entity Framework Core 10 | Code First, Fluent API, migraciones |
 | BD Relacional | SQL Server (LocalDB) | Índices, relaciones, seed data |
 | BD NoSQL | MongoDB | Solo para historial de búsquedas (deseable) |
 | Auth | JWT Bearer tokens | Roles: Admin y Cliente |

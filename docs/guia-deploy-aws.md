@@ -366,22 +366,24 @@ Elastic Beanstalk necesita saber dónde está el Dockerfile cuando no está en l
 
 **Nota:** Elastic Beanstalk buscará el `Dockerfile` en la raíz del paquete que sube. Como nuestro Dockerfile está en `src/EcommerceNet.API/`, necesitamos un enfoque diferente.
 
-**Alternativa más simple — crear un Dockerfile en la raíz:**
+**Crear un Dockerfile en la raíz del repositorio (VERSIÓN QUE FUNCIONÓ):**
 
-```powershell
-# Crear un Dockerfile en la raíz que apunte al de la API
-```
+> **⚠️ Errores críticos que ocurrieron y sus fixes:**
+> 1. `COPY EcommerceNet.sln .` falla → el archivo es `.slnx` (formato .NET 9+). Fix: usar `EcommerceNet.slnx`
+> 2. EB ignora el Dockerfile y usa `docker-compose.yml` → Fix: crear `.ebignore` que excluya `docker-compose.yml`
+> 3. `sdk:8.0` no reconoce `.slnx` → Fix: usar `sdk:10.0` (el proyecto es `net10.0`)
 
-Crea el archivo `Dockerfile` en la raíz del repositorio con este contenido:
+Crea el archivo `Dockerfile` en la **raíz** del repositorio:
 
 ```dockerfile
 # Dockerfile raíz — para Elastic Beanstalk
-# Redirige al Dockerfile real de la API
+# IMPORTANTE: usa sdk:10.0 (no 8.0) — el proyecto es net10.0
+# IMPORTANTE: usa EcommerceNet.slnx (no .sln) — formato .NET 9+
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /app
 
-COPY EcommerceNet.sln .
+COPY EcommerceNet.slnx .
 COPY src/EcommerceNet.Core/EcommerceNet.Core.csproj src/EcommerceNet.Core/
 COPY src/EcommerceNet.Data/EcommerceNet.Data.csproj src/EcommerceNet.Data/
 COPY src/EcommerceNet.API/EcommerceNet.API.csproj src/EcommerceNet.API/
@@ -391,7 +393,7 @@ RUN dotnet restore
 COPY . .
 RUN dotnet publish src/EcommerceNet.API -c Release -o /publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /publish .
 EXPOSE 80
@@ -400,17 +402,31 @@ ENV ASPNETCORE_ENVIRONMENT=Production
 ENTRYPOINT ["dotnet", "EcommerceNet.API.dll"]
 ```
 
+**Crear `.ebignore` en la raíz (OBLIGATORIO):**
+
+```
+docker-compose.yml
+src/EcommerceNet.Web/
+.vs/
+*.user
+node_modules/
+dist/
+docs/
+```
+
+Sin este archivo, EB detecta `docker-compose.yml` y lo usa en lugar del `Dockerfile` raíz.
+
 ### Paso 3.5 — Crear el entorno en Elastic Beanstalk
 
 Este comando crea la instancia EC2, el load balancer, el auto-scaling group y todo lo necesario. **Tarda entre 5 y 15 minutos.**
 
 ```powershell
-eb create ecommercenet-api --single --instance-type t2.micro --timeout 20
+eb create ecommercenet-api --single --instance-type t3.micro --timeout 20
 ```
 
 - `ecommercenet-api` — nombre del entorno (aparecerá en la URL)
 - `--single` — una sola instancia EC2 (sin load balancer, más económico)
-- `--instance-type t2.micro` — instancia Free Tier
+- `--instance-type t3.micro` — instancia del Free Tier (t2.micro y t3.micro son elegibles)
 - `--timeout 20` — esperar hasta 20 minutos antes de declarar timeout
 
 **Durante el proceso verás muchas líneas como:**
@@ -952,14 +968,64 @@ En `Program.cs`, agregar la condición para SQLite. Los datos persisten entre re
 
 ---
 
+## Sección 9 — Troubleshooting (errores reales del deploy)
+
+Estos errores ocurrieron durante el deploy real (2026-04-09) y requirieron 3 intentos de `eb create`.
+
+### Error 1: `COPY EcommerceNet.sln: not found`
+
+**Síntoma:** El build de Docker en EB falla en la primera instrucción COPY.
+
+**Causa:** El archivo de solución se llama `EcommerceNet.slnx` (formato introducido en .NET 9+). El Dockerfile original hacía `COPY EcommerceNet.sln .` — ese archivo no existe.
+
+**Fix:** En el Dockerfile (raíz y en `src/EcommerceNet.API/`), cambiar:
+```dockerfile
+COPY EcommerceNet.sln .     # ← INCORRECTO
+COPY EcommerceNet.slnx .    # ← CORRECTO
+```
+
+### Error 2: EB usa `docker-compose.yml` en vez del `Dockerfile` raíz
+
+**Síntoma:** EB detecta el `docker-compose.yml` existente y lo prioriza sobre el `Dockerfile` raíz. El compose levanta 3 servicios (API + SQL Server + MongoDB) pero EB no puede descargar las imágenes sin configuración adicional.
+
+**Causa:** Elastic Beanstalk tiene este orden de precedencia: `docker-compose.yml` > `Dockerfile`. Como el repo tenía `docker-compose.yml`, EB lo usó.
+
+**Fix:** Crear `.ebignore` en la raíz con `docker-compose.yml` listado. `.ebignore` funciona como `.gitignore` para el archivo ZIP que EB sube a S3 — lo que está en `.ebignore` no se incluye en el deploy.
+
+### Error 3: `MSB1003: Specify a project or solution file`
+
+**Síntoma:** `dotnet restore` dentro del contenedor Docker falla con "MSB1003: no se pudo encontrar ningún archivo de proyecto o solución".
+
+**Causa:** `sdk:8.0` no soporta el formato `.slnx`. El formato `.slnx` fue introducido con el SDK de .NET 9. Como el proyecto usa `net10.0`, se necesita `sdk:10.0`.
+
+**Fix:** En ambos Dockerfiles, cambiar:
+```dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build    # ← SDK 8 no soporta .slnx
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build   # ← SDK 10 sí soporta .slnx
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0           # ← Runtime incorrecto
+FROM mcr.microsoft.com/dotnet/aspnet:10.0          # ← Runtime correcto para net10.0
+```
+
+### Cómo verificar si EB está usando el Dockerfile correcto
+
+Después del error, si necesitas terminar un entorno fallido y crear uno nuevo:
+```powershell
+eb terminate ecommercenet-api --force
+# Esperar ~5 minutos
+eb create ecommercenet-api --single --instance-type t3.micro --timeout 20
+```
+
+---
+
 ## Resumen de URLs
 
 Una vez completado el deploy, tus URLs de producción son:
 
 | Recurso | URL |
 |---------|-----|
-| **API (Swagger)** | `http://ecommercenet-api.us-east-1.elasticbeanstalk.com/swagger` |
-| **API (base)** | `http://ecommercenet-api.us-east-1.elasticbeanstalk.com/api` |
+| **API (Swagger)** | `http://ecommercenet-api.eba-fxkridvp.us-east-1.elasticbeanstalk.com/swagger` |
+| **API (base)** | `http://ecommercenet-api.eba-fxkridvp.us-east-1.elasticbeanstalk.com/api` |
 | **Frontend** | `http://ecommercenet-ramiro671.s3-website-us-east-1.amazonaws.com` |
 | **GitHub Repo** | `https://github.com/Ramiro671/EcommerceNet` |
 | **GitHub Actions** | `https://github.com/Ramiro671/EcommerceNet/actions` |

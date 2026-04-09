@@ -429,7 +429,7 @@ EcommerceNet/
 ├── .gitignore                              — Excluye bin/, obj/, node_modules/, dist/
 ├── CLAUDE.md                               — Reglas de arquitectura
 ├── README.md                               — Descripción del proyecto
-├── EcommerceNet.sln                        — Solución .NET
+├── EcommerceNet.slnx                       — Solución .NET (formato .NET 9+)
 ├── docs/
 │   ├── dia-01-fundamentos-csharp.md
 │   ├── dia-01-clase-programacion.md

@@ -182,31 +182,36 @@ git push origin desarrollo
 
 ### Archivo: `src/EcommerceNet.API/Dockerfile`
 
+> **IMPORTANTE (lección del deploy real):** El proyecto usa `net10.0` con paquetes `10.0.5`.
+> El SDK debe ser `sdk:10.0`, NO `sdk:8.0` — el SDK 8 no soporta el formato `.slnx` (introducido en .NET 9+).
+> El archivo de solución es `EcommerceNet.slnx`, NO `EcommerceNet.sln`.
+
 ```dockerfile
-# Etapa 1: Compilar
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# Etapa 1: Compilar — SDK .NET 10 (el proyecto usa net10.0)
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /app
 
 # Copiar archivos de solución y proyectos (para cachear restore)
-COPY EcommerceNet.sln .
-COPY src/EcommerceNet.Core/*.csproj src/EcommerceNet.Core/
-COPY src/EcommerceNet.Data/*.csproj src/EcommerceNet.Data/
-COPY src/EcommerceNet.API/*.csproj src/EcommerceNet.API/
-COPY tests/EcommerceNet.Tests/*.csproj tests/EcommerceNet.Tests/
+COPY EcommerceNet.slnx .
+COPY src/EcommerceNet.Core/EcommerceNet.Core.csproj src/EcommerceNet.Core/
+COPY src/EcommerceNet.Data/EcommerceNet.Data.csproj src/EcommerceNet.Data/
+COPY src/EcommerceNet.API/EcommerceNet.API.csproj src/EcommerceNet.API/
+COPY tests/EcommerceNet.Tests/EcommerceNet.Tests.csproj tests/EcommerceNet.Tests/
 RUN dotnet restore
 
 # Copiar todo el código y publicar
 COPY . .
 RUN dotnet publish src/EcommerceNet.API -c Release -o /publish
 
-# Etapa 2: Ejecutar (imagen ligera, sin SDK)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+# Etapa 2: Ejecutar (imagen ligera, sin SDK — ~200 MB)
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /publish .
 
 # Puerto de la API
 EXPOSE 80
 ENV ASPNETCORE_URLS=http://+:80
+ENV ASPNETCORE_ENVIRONMENT=Production
 
 ENTRYPOINT ["dotnet", "EcommerceNet.API.dll"]
 ```
@@ -272,32 +277,60 @@ docker-compose up --build
 | **B: EC2 + Docker** | Media | Free Tier | Más control |
 | **C: ECS Fargate** | Avanzada | ~$0.05/hr | Producción real |
 
-### Opción A: Elastic Beanstalk (recomendada para la demo)
+### Opción A: Elastic Beanstalk — Lo que funcionó realmente
+
+> **Nota:** El deploy requirió 3 intentos por errores del Dockerfile. Ver sección Troubleshooting abajo.
 
 ```powershell
-# 1. Instalar AWS CLI
-# Descargar desde: https://aws.amazon.com/cli/
+# 1. Instalar AWS CLI (versión instalada: 2.34.27)
+winget install Amazon.AWSCLI
 
-# 2. Configurar credenciales
+# 2. Configurar credenciales (usuario IAM ecommercenet-deploy)
 aws configure
-# AWS Access Key ID: (de tu cuenta)
-# AWS Secret Access Key: (de tu cuenta)
+# AWS Access Key ID: (de tu cuenta IAM)
+# AWS Secret Access Key: (de tu cuenta IAM)
 # Default region: us-east-1
 # Default output format: json
 
-# 3. Instalar EB CLI
+# 3. Instalar Python y EB CLI
+winget install Python.Python.3.12
 pip install awsebcli
+# EB CLI instalado: 3.27.1
 
-# 4. Inicializar Elastic Beanstalk
-cd C:\Users\ramir\Source\repos\EcommerceNet
-eb init -p docker EcommerceNet --region us-east-1
+# 4. Inicializar Elastic Beanstalk (desde la raíz del repo)
+eb init EcommerceNet --platform Docker --region us-east-1
 
-# 5. Crear entorno (usa el Dockerfile)
-eb create ecommercenet-env --single --instance-type t2.micro
+# 5. Crear .ebignore para que EB use el Dockerfile raíz (no docker-compose.yml)
+# Contenido de .ebignore:
+#   docker-compose.yml
+#   src/EcommerceNet.Web/
+#   .vs/
+#   node_modules/
+#   dist/
+#   docs/
 
-# 6. Abrir en el navegador
+# 6. Crear entorno (usa el Dockerfile raíz)
+eb create ecommercenet-api --single --instance-type t3.micro --timeout 20
+
+# 7. Configurar variables de entorno
+eb setenv Jwt__Key="EstaEsMiClaveSecretaSuperSeguraDe256BitsParaProduccion!!" Jwt__Issuer=EcommerceNet.API Jwt__Audience=EcommerceNet.Web ASPNETCORE_ENVIRONMENT=Production UseInMemoryDatabase=true
+
+# 8. Verificar estado
+eb status
+# Health: Green ✅
+
+# 9. Abrir en el navegador
 eb open
+# URL real: http://ecommercenet-api.eba-fxkridvp.us-east-1.elasticbeanstalk.com/swagger
 ```
+
+### Troubleshooting — 3 errores reales durante el deploy
+
+| # | Error | Causa | Fix |
+|---|-------|-------|-----|
+| 1 | `COPY EcommerceNet.sln: not found` | El archivo de solución es `.slnx` (formato .NET 9+), no `.sln` | Cambiar `COPY EcommerceNet.sln .` → `COPY EcommerceNet.slnx .` en ambos Dockerfiles |
+| 2 | EB usaba `docker-compose.yml` en vez del `Dockerfile` raíz | EB prefiere `docker-compose.yml` cuando existe en el archivo | Crear `.ebignore` que excluya `docker-compose.yml` |
+| 3 | `MSB1003: Specify a project or solution file` | `sdk:8.0` no soporta el formato `.slnx` (introducido en .NET 9+) | Cambiar `sdk:8.0` → `sdk:10.0` y `aspnet:8.0` → `aspnet:10.0` |
 
 ### Base de datos en AWS
 
@@ -316,23 +349,34 @@ aws rds create-db-instance \
 # Instalar: dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 ```
 
-### Frontend en S3 + CloudFront
+### Frontend en S3 (hosting estático)
 
 ```powershell
-# 1. Build de producción
+# 1. Crear .env.production con la URL real de la API
+# src/EcommerceNet.Web/.env.production:
+# VITE_API_URL=http://ecommercenet-api.eba-fxkridvp.us-east-1.elasticbeanstalk.com/api
+
+# 2. Build de producción
 cd src/EcommerceNet.Web
 npm run build
 
-# 2. Crear bucket S3
-aws s3 mb s3://ecommercenet-frontend
+# 3. Crear bucket S3 (nombre único globalmente)
+aws s3 mb s3://ecommercenet-ramiro671 --region us-east-1
 
-# 3. Configurar para hosting estático
-aws s3 website s3://ecommercenet-frontend --index-document index.html --error-document index.html
+# 4. Deshabilitar Block Public Access (requerido para hosting estático)
+aws s3api put-public-access-block --bucket ecommercenet-ramiro671 --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
 
-# 4. Subir los archivos
-aws s3 sync dist/ s3://ecommercenet-frontend --acl public-read
+# 5. Configurar para hosting estático
+aws s3 website s3://ecommercenet-ramiro671 --index-document index.html --error-document index.html
 
-# 5. URL: http://ecommercenet-frontend.s3-website-us-east-1.amazonaws.com
+# 6. Aplicar política de acceso público (bucket-policy.json)
+aws s3api put-bucket-policy --bucket ecommercenet-ramiro671 --policy file://bucket-policy.json
+
+# 7. Subir los archivos
+aws s3 sync src/EcommerceNet.Web/dist/ s3://ecommercenet-ramiro671
+
+# URL real del frontend:
+# http://ecommercenet-ramiro671.s3-website-us-east-1.amazonaws.com
 ```
 
 > **Para la entrevista:**
@@ -528,15 +572,26 @@ git push origin v1.0.0
 
 ---
 
+## URLs de producción reales (deploy completado 2026-04-09)
+
+| Recurso | URL |
+|---------|-----|
+| **API (Swagger)** | http://ecommercenet-api.eba-fxkridvp.us-east-1.elasticbeanstalk.com/swagger |
+| **Frontend (S3)** | http://ecommercenet-ramiro671.s3-website-us-east-1.amazonaws.com |
+| **Admin** | admin@ecommercenet.com / Admin123! |
+| **Cliente** | demo@ecommercenet.com / Demo123! |
+
+---
+
 ## Resumen de la semana completa
 
 | Día | Qué construiste | Archivos clave |
 |-----|----------------|----------------|
-| **1** | Entidades, interfaces, DTOs, CarritoServicio, 22 tests | Core/ completo |
+| **1** | Entidades, interfaces, DTOs, CarritoServicio, 23 tests | Core/ completo |
 | **2** | 5 controladores, 18 endpoints, JWT, Swagger, middleware | API/Controllers/, Program.cs |
 | **3** | EF Core, repositorios, migraciones, SQL avanzado, MongoDB | Data/ completo |
-| **4** | Vue.js 3 SPA + jQuery legacy, 3 stores, 7 vistas | Web/ completo |
-| **5** | Docker, CI/CD, AWS deploy, prep entrevista | Dockerfile, ci-cd.yml |
+| **4** | Vue.js 3 SPA + jQuery legacy, 3 stores, 8 vistas | Web/ completo |
+| **5** | Docker, CI/CD, AWS deploy, panel admin, InMemory DB | Dockerfile, .ebignore, appsettings.Production.json |
 
 **Resultado:** Una tienda online fullstack desplegada en AWS con CI/CD, que demuestra dominio de CADA tecnología de la vacante de DaCodes.
 

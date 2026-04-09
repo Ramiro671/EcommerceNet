@@ -19,7 +19,7 @@ Tienda online fullstack construida para demostrar dominio del stack requerido po
 
 | Capa | Tecnología | Versión |
 |------|-----------|---------|
-| Backend | ASP.NET Core Web API | 8.0 |
+| Backend | ASP.NET Core Web API | 10.0 |
 | ORM | Entity Framework Core | 10.0.5 |
 | BD Relacional | SQL Server LocalDB | 2022 |
 | BD NoSQL | MongoDB | 7.x |

@@ -43,7 +43,7 @@ Es la reescritura completa que Microsoft lanzó en 2016. Es multiplataforma, mod
 
 ### Tabla comparativa (memorízala para la entrevista)
 
-| Concepto | MVC Legacy (.NET Framework) | ASP.NET Core (.NET 8) |
+| Concepto | MVC Legacy (.NET Framework) | ASP.NET Core (.NET 10) |
 |----------|---------------------------|----------------------|
 | **Plataforma** | Solo Windows | Windows, Linux, macOS |
 | **Punto de entrada** | `Global.asax` + `Startup.cs` | `Program.cs` (unificado) |

@@ -61,8 +61,8 @@ cd C:\Users\ramir\Source\repos\EcommerceNet
 dotnet new sln -n EcommerceNet
 ```
 
-**Qué produce:** `EcommerceNet.sln`  
-**Por qué existe:** El `.sln` es el punto de entrada para Visual Studio y para `dotnet build`/`dotnet test` desde la raíz. Sin él, habría que compilar cada proyecto por separado.
+**Qué produce:** `EcommerceNet.slnx`  
+**Por qué existe:** El `.slnx` es el nuevo formato de solución introducido en .NET 9 (reemplaza al `.sln`). Es el punto de entrada para Visual Studio y para `dotnet build`/`dotnet test` desde la raíz. Sin él, habría que compilar cada proyecto por separado.
 
 ### 2.2 Crear los cuatro proyectos
 
@@ -487,7 +487,7 @@ Passed!  - Failed: 0, Passed: 23, Skipped: 0, Total: 23, Duration: 107 ms
 
 | Archivo | Tipo | Descripción |
 |---------|------|-------------|
-| `EcommerceNet.sln` | Solución | Punto de entrada para build/test de toda la solución |
+| `EcommerceNet.slnx` | Solución | Punto de entrada para build/test de toda la solución (formato .NET 9+) |
 | `src/EcommerceNet.Core/EcommerceNet.Core.csproj` | Proyecto | classlib, net10.0, sin dependencias externas |
 | `src/EcommerceNet.Data/EcommerceNet.Data.csproj` | Proyecto | classlib, referencia a Core |
 | `src/EcommerceNet.API/EcommerceNet.API.csproj` | Proyecto | webapi, referencia a Data, incluye OpenAPI |
