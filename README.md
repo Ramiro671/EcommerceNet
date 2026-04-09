@@ -6,12 +6,12 @@ Tienda online fullstack construida para demostrar dominio del stack requerido po
 
 | Recurso | URL |
 |---------|-----|
-| API (Swagger) | https://ecommercenet-env.elasticbeanstalk.com/swagger |
-| Frontend (Vue.js) | http://ecommercenet-frontend.s3-website-us-east-1.amazonaws.com |
+| **API (Swagger)** | http://ecommercenet-api.eba-fxkridvp.us-east-1.elasticbeanstalk.com/swagger |
+| **Frontend (Vue.js)** | http://ecommercenet-ramiro671.s3-website-us-east-1.amazonaws.com |
 | Usuario demo | demo@ecommercenet.com / Demo123! |
 | Admin demo | admin@ecommercenet.com / Admin123! |
 
-> Desplegado en AWS: API en Elastic Beanstalk con Docker, frontend estático en S3.
+> Desplegado en AWS: API en Elastic Beanstalk (Docker + .NET 10, t3.micro), frontend estático en S3.
 
 ---
 

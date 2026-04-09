@@ -1,8 +1,11 @@
 import axios from 'axios'
 
+// URL de la API — usa variable de entorno de Vite si existe, o localhost para desarrollo
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5152/api'
+
 // Crear instancia de Axios con la URL base de la API
 const api = axios.create({
-  baseURL: 'http://localhost:5152/api', // puerto del API .NET
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json'
   }
