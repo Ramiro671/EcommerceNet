@@ -57,12 +57,16 @@ builder.Services.AddSwaggerGen(opciones =>
     });
 });
 
-// CORS — permite peticiones desde el frontend Vue.js (puerto 5173)
+// CORS — permite peticiones desde el frontend Vue.js y desde S3 en producción
 builder.Services.AddCors(opciones =>
 {
     opciones.AddPolicy("PermitirVue", politica =>
     {
-        politica.WithOrigins("http://localhost:5173")
+        politica.WithOrigins(
+                    "http://localhost:5173",
+                    "http://localhost:5000",
+                    "http://ecommercenet-ramiro671.s3-website-us-east-1.amazonaws.com"
+                )
                .AllowAnyHeader()
                .AllowAnyMethod();
     });
@@ -92,12 +96,21 @@ builder.Services.AddAuthentication(opciones =>
 builder.Services.AddAuthorization();
 
 // ----------------------------------------------------------
-// Día 3: EF Core + SQL Server
+// Día 3: EF Core — SQL Server en desarrollo, InMemory en producción (AWS demo)
 // AddDbContext = Scoped (una conexión por request HTTP)
 // ----------------------------------------------------------
-builder.Services.AddDbContext<AppDbContext>(opciones =>
-    opciones.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+if (builder.Configuration.GetValue<bool>("UseInMemoryDatabase"))
+{
+    // Base de datos en memoria para la demo en AWS (sin necesidad de RDS)
+    builder.Services.AddDbContext<AppDbContext>(opciones =>
+        opciones.UseInMemoryDatabase("EcommerceNetDB"));
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(opciones =>
+        opciones.UseSqlServer(
+            builder.Configuration.GetConnectionString("DefaultConnection")));
+}
 
 // ----------------------------------------------------------
 // Día 3: Unidad de Trabajo y servicios con BD real
@@ -122,19 +135,17 @@ var app = builder.Build();
 // 1. Manejo global de errores — SIEMPRE al principio para atrapar todo lo demás
 app.UseMiddleware<ManejadorErroresMiddleware>();
 
-// 2. Swagger solo en desarrollo
-if (app.Environment.IsDevelopment())
+// 2. Swagger en todos los entornos (necesario para demo en AWS)
+app.UseSwagger();
+app.UseSwaggerUI(opciones =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(opciones =>
-    {
-        opciones.SwaggerEndpoint("/swagger/v1/swagger.json", "EcommerceNet API v1");
-        opciones.RoutePrefix = "swagger";
-    });
-}
+    opciones.SwaggerEndpoint("/swagger/v1/swagger.json", "EcommerceNet API v1");
+    opciones.RoutePrefix = "swagger";
+});
 
-// 3. Redirigir HTTP a HTTPS
-app.UseHttpsRedirection();
+// 3. HTTPS redirect desactivado en producción (EB maneja HTTP en el puerto 80)
+if (app.Environment.IsDevelopment())
+    app.UseHttpsRedirection();
 
 // 4. CORS — antes de auth para que las peticiones preflight (OPTIONS) pasen
 app.UseCors("PermitirVue");
@@ -147,5 +158,15 @@ app.UseAuthorization();
 
 // 7. Mapear controladores
 app.MapControllers();
+
+// ----------------------------------------------------------
+// Seed data para InMemory DB (EnsureCreated aplica el HasData de OnModelCreating)
+// En SQL Server esto se hace con migraciones; en InMemory usamos EnsureCreated
+// ----------------------------------------------------------
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated();
+}
 
 app.Run();
