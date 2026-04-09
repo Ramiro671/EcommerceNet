@@ -1,4 +1,5 @@
 using EcommerceNet.Core.DTOs;
+using EcommerceNet.Core.Entidades;
 using EcommerceNet.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,8 +8,7 @@ namespace EcommerceNet.API.Controllers;
 
 /// <summary>
 /// Controlador de categorías.
-/// Estructura completa — la implementación real se conectará con EF Core en el Día 3
-/// cuando agreguemos ICategoriaRepositorio al sistema.
+/// GET es público. POST, PUT, DELETE requieren JWT con rol Admin.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
@@ -21,39 +21,88 @@ public class CategoriasController : ControllerBase
         _uow = uow;
     }
 
-    /// <summary>
-    /// Listar todas las categorías.
-    /// TODO (Día 3): implementar con ICategoriaRepositorio real.
-    /// </summary>
+    /// <summary>Listar todas las categorías activas (público)</summary>
     [HttpGet]
-    public IActionResult ObtenerTodas()
+    public async Task<IActionResult> ObtenerTodas()
     {
-        // Placeholder hasta que agreguemos ICategoriaRepositorio en Día 3
-        return Ok(Resultado<string>.Ok("Endpoint pendiente — se implementa en Día 3 con EF Core"));
+        var categorias = await _uow.Categorias.ObtenerActivasAsync();
+        var dtos = categorias.Select(MapearADto);
+        return Ok(Resultado<IEnumerable<CategoriaDto>>.Ok(dtos));
     }
 
-    /// <summary>
-    /// Crear una categoría nueva (solo Admin).
-    /// TODO (Día 3): implementar con repositorio real.
-    /// </summary>
+    /// <summary>Listar TODAS las categorías incluyendo inactivas (Admin)</summary>
+    [HttpGet("todas")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> ObtenerTodasAdmin()
+    {
+        var categorias = await _uow.Categorias.ObtenerTodosAsync();
+        var dtos = categorias.Select(MapearADto);
+        return Ok(Resultado<IEnumerable<CategoriaDto>>.Ok(dtos));
+    }
+
+    /// <summary>Crear una categoría nueva (solo Admin)</summary>
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public IActionResult Crear([FromBody] CrearCategoriaDto dto)
+    public async Task<IActionResult> Crear([FromBody] CrearCategoriaDto dto)
     {
         if (string.IsNullOrWhiteSpace(dto.Nombre))
-            return BadRequest(Resultado<string>.Error("El nombre de la categoría es obligatorio"));
+            return BadRequest(Resultado<CategoriaDto>.Error("El nombre de la categoría es obligatorio"));
 
-        // Placeholder hasta Día 3
-        return Ok(Resultado<string>.Ok("Categoría creada (pendiente EF Core en Día 3)"));
+        var categoria = new Categoria
+        {
+            Nombre = dto.Nombre.Trim(),
+            Descripcion = dto.Descripcion?.Trim() ?? string.Empty,
+            Activa = true
+        };
+
+        await _uow.Categorias.AgregarAsync(categoria);
+        await _uow.GuardarCambiosAsync();
+
+        return Ok(Resultado<CategoriaDto>.Ok(MapearADto(categoria), "Categoría creada exitosamente"));
     }
-}
 
-/// <summary>
-/// DTO para crear una categoría.
-/// Se moverá a Core/DTOs/ cuando se implemente con EF Core en Día 3.
-/// </summary>
-public class CrearCategoriaDto
-{
-    public string Nombre { get; set; } = string.Empty;
-    public string Descripcion { get; set; } = string.Empty;
+    /// <summary>Actualizar una categoría (solo Admin)</summary>
+    [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Actualizar(int id, [FromBody] CrearCategoriaDto dto)
+    {
+        var categoria = await _uow.Categorias.ObtenerPorIdAsync(id);
+        if (categoria == null)
+            return NotFound(Resultado<CategoriaDto>.Error("Categoría no encontrada"));
+
+        if (string.IsNullOrWhiteSpace(dto.Nombre))
+            return BadRequest(Resultado<CategoriaDto>.Error("El nombre es obligatorio"));
+
+        categoria.Nombre = dto.Nombre.Trim();
+        categoria.Descripcion = dto.Descripcion?.Trim() ?? string.Empty;
+
+        _uow.Categorias.Actualizar(categoria);
+        await _uow.GuardarCambiosAsync();
+
+        return Ok(Resultado<CategoriaDto>.Ok(MapearADto(categoria), "Categoría actualizada"));
+    }
+
+    /// <summary>Desactivar una categoría (soft delete, solo Admin)</summary>
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Desactivar(int id)
+    {
+        var categoria = await _uow.Categorias.ObtenerPorIdAsync(id);
+        if (categoria == null)
+            return NotFound(Resultado<bool>.Error("Categoría no encontrada"));
+
+        categoria.Activa = false;
+        _uow.Categorias.Actualizar(categoria);
+        await _uow.GuardarCambiosAsync();
+
+        return Ok(Resultado<bool>.Ok(true, "Categoría desactivada"));
+    }
+
+    private static CategoriaDto MapearADto(Categoria c) => new()
+    {
+        Id = c.Id,
+        Nombre = c.Nombre,
+        Descripcion = c.Descripcion,
+        Activa = c.Activa
+    };
 }

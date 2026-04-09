@@ -30,7 +30,8 @@ function cerrarSesion() {
             {{ carrito.totalItems }}
           </span>
         </RouterLink>
-        <span class="usuario-nombre">{{ auth.nombreUsuario }}</span>
+        <RouterLink v-if="auth.esAdmin" to="/admin" class="btn-admin">Admin Tienda</RouterLink>
+        <span v-else class="usuario-nombre">{{ auth.nombreUsuario }}</span>
         <button @click="cerrarSesion" class="btn-logout">Salir</button>
       </template>
 
@@ -117,5 +118,13 @@ function cerrarSesion() {
 .btn-registro {
   background: #1a1a2e;
   color: white !important;
+}
+
+.btn-admin {
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  background: #059669;
+  color: white !important;
+  font-weight: 600;
 }
 </style>

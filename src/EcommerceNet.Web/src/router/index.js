@@ -8,6 +8,7 @@ import CheckoutView from '@/views/CheckoutView.vue'
 import MisOrdenesView from '@/views/MisOrdenesView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegistroView from '@/views/RegistroView.vue'
+import AdminView from '@/views/AdminView.vue'
 
 const rutas = [
   {
@@ -47,6 +48,12 @@ const rutas = [
     path: '/registro',
     name: 'registro',
     component: RegistroView
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: AdminView,
+    meta: { requiereAuth: true, requiereAdmin: true }
   }
 ]
 
@@ -60,8 +67,9 @@ router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
 
   if (to.meta.requiereAuth && !auth.estaLogueado) {
-    // Guardar la ruta destino para redirigir después del login
     next({ name: 'login', query: { redirect: to.fullPath } })
+  } else if (to.meta.requiereAdmin && !auth.esAdmin) {
+    next({ name: 'tienda' })
   } else {
     next()
   }

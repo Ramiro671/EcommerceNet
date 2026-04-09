@@ -20,6 +20,7 @@ public class UnidadDeTrabajo : IUnidadDeTrabajo
     private ICarritoRepositorio? _carritos;
     private IOrdenRepositorio? _ordenes;
     private IUsuarioRepositorio? _usuarios;
+    private ICategoriaRepositorio? _categorias;
 
     public UnidadDeTrabajo(AppDbContext contexto)
     {
@@ -41,6 +42,9 @@ public class UnidadDeTrabajo : IUnidadDeTrabajo
 
     public IUsuarioRepositorio Usuarios =>
         _usuarios ??= new UsuarioRepositorio(_contexto);
+
+    public ICategoriaRepositorio Categorias =>
+        _categorias ??= new CategoriaRepositorio(_contexto);
 
     /// <summary>
     /// Persiste TODOS los cambios pendientes en una sola transacción.

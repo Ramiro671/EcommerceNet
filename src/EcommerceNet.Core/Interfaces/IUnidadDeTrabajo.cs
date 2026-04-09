@@ -7,5 +7,6 @@ public interface IUnidadDeTrabajo : IDisposable
     ICarritoRepositorio Carritos { get; }
     IOrdenRepositorio Ordenes { get; }
     IUsuarioRepositorio Usuarios { get; }
+    ICategoriaRepositorio Categorias { get; }
     Task<int> GuardarCambiosAsync();
 }
