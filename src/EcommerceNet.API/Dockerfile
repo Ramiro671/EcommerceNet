@@ -4,7 +4,7 @@
 # ============================================================
 
 # Etapa 1: COMPILAR con el SDK completo (.NET 8)
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /app
 
 # Copiar archivos de proyecto primero (para cachear la capa de restore)
@@ -24,7 +24,7 @@ RUN dotnet publish src/EcommerceNet.API -c Release -o /publish
 # Etapa 2: EJECUTAR con solo el ASP.NET runtime (imagen ligera)
 # SDK pesa ~800MB, ASP.NET runtime pesa ~200MB
 # ============================================================
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 
 # Copiar solo los binarios publicados de la etapa anterior
