@@ -9,7 +9,7 @@ WORKDIR /app
 
 # Copiar archivos de proyecto primero (para cachear la capa de restore)
 # Si no cambió ningún .csproj, Docker reutiliza la capa cacheada de restore
-COPY EcommerceNet.sln .
+COPY EcommerceNet.slnx .
 COPY src/EcommerceNet.Core/EcommerceNet.Core.csproj src/EcommerceNet.Core/
 COPY src/EcommerceNet.Data/EcommerceNet.Data.csproj src/EcommerceNet.Data/
 COPY src/EcommerceNet.API/EcommerceNet.API.csproj src/EcommerceNet.API/

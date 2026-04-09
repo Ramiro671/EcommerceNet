@@ -1,0 +1,12 @@
+# Excluir docker-compose.yml para que EB use el Dockerfile raíz directamente
+docker-compose.yml
+
+# Excluir frontend Vue.js (no es parte del backend)
+src/EcommerceNet.Web/
+
+# Excluir archivos de desarrollo y build locales
+.vs/
+*.user
+node_modules/
+dist/
+docs/

@@ -9,7 +9,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 # Copiar archivos de proyecto primero (para cachear la capa de restore)
-COPY EcommerceNet.sln .
+COPY EcommerceNet.slnx .
 COPY src/EcommerceNet.Core/EcommerceNet.Core.csproj src/EcommerceNet.Core/
 COPY src/EcommerceNet.Data/EcommerceNet.Data.csproj src/EcommerceNet.Data/
 COPY src/EcommerceNet.API/EcommerceNet.API.csproj src/EcommerceNet.API/
