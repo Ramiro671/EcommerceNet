@@ -130,7 +130,7 @@ Antes de configurar la CLI, necesitas las credenciales de AWS:
 **Deberías tener un archivo CSV con:**
 ```
 Access key ID,Secret access key
-AKIAIOSFODNN7EXAMPLE,wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+TU_ACCESS_KEY_ID_AQUI,TU_SECRET_ACCESS_KEY_AQUI
 ```
 
 ### Paso 1.5 — Configurar credenciales AWS
@@ -141,8 +141,8 @@ aws configure
 
 **El CLI te pedirá cuatro valores (escríbelos y presiona Enter después de cada uno):**
 ```
-AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
-AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+AWS Access Key ID [None]: TU_ACCESS_KEY_ID_AQUI
+AWS Secret Access Key [None]: TU_SECRET_ACCESS_KEY_AQUI
 Default region name [None]: us-east-1
 Default output format [None]: json
 ```

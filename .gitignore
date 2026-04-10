@@ -4,12 +4,21 @@ obj/
 *.user
 .vs/
 
+# Archivos de configuración con secretos (NO commitear)
+appsettings.Development.json
+appsettings.Production.json
+*.pfx
+*.p12
+
 # Node.js / Vue.js
 node_modules/
 dist/
 .env
 .env.local
 .env.production
+
+# AWS — credenciales locales (NUNCA commitear)
+.aws/
 
 # Logs
 *.log

@@ -487,8 +487,8 @@ La cuenta de AWS tiene un usuario **root** con acceso total e irrevocable. Si al
 
 **2. Access Key ID + Secret Access Key** — para programas y la CLI
 ```
-Access Key ID:     AKIAIOSFODNN7EXAMPLE
-Secret Access Key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+Access Key ID:     TU_ACCESS_KEY_ID_AQUI
+Secret Access Key: TU_SECRET_ACCESS_KEY_AQUI
 ```
 **Nunca los pongas en el código fuente — ni en GitHub, ni en comentarios.**
 
@@ -696,8 +696,8 @@ aws --version
 
 ```bash
 aws configure
-# AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
-# AWS Secret Access Key [None]: wJalrXUtnFEM...
+# AWS Access Key ID [None]: TU_ACCESS_KEY_ID_AQUI
+# AWS Secret Access Key [None]: TU_SECRET_ACCESS_KEY_AQUI
 # Default region name [None]: us-east-1
 # Default output format [None]: json
 ```
