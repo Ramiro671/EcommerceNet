@@ -9,7 +9,7 @@ pdf_options:
 # RAMIRO EDUARDO LÓPEZ GARCÍA
 **Senior Fullstack .NET & Vue.js Developer**
 
-ramirolopez@outlook.com | 55 6810 0917 | linkedin.com/in/ramiro-lopez-garcia | github.com/Ramiro671
+ramirolopez@outlook.com | 55 6810 0917 | [LinkedIn](https://www.linkedin.com/in/ramiro-eduardo-l%C3%B3pez-garc%C3%ADa-b7b4941a9/) | [GitHub](https://github.com/Ramiro671)
 
 ---
 
@@ -53,11 +53,14 @@ Ingeniero en Sistemas Computacionales con más de 9 años de experiencia en desa
 ## EXPERIENCIA PROFESIONAL
 
 ### Profesional Especialista en Desarrollo de Sistemas
-*INE (Instituto Nacional Electoral) | Nov 2025 – Dic 2025*
+*INE (Instituto Nacional Electoral) | Nov 2025 – Actual*
 
 - Analicé y diseñé componentes de sistemas de información críticos para procesos electorales institucionales.
 - Construí módulos en C# y ASP.NET Core siguiendo estándares de arquitectura y normativas internas de la institución.
 - Documenté especificaciones técnicas y colaboré en revisiones de código con el equipo de desarrollo.
+- Desarrollé proyecto fullstack EcommerceNet (ASP.NET Core 10, Vue.js 3, SQL Server, MongoDB) aplicando Clean Architecture con 4 capas y 23 pruebas unitarias automatizadas con xUnit.
+- Implementé CI/CD con GitHub Actions y desplegué en AWS (Elastic Beanstalk + S3) utilizando contenedores Docker con build multi-stage.
+- Diseñé API REST con 18 endpoints, autenticación JWT con roles (Admin/Cliente), Entity Framework Core Code First y documentación Swagger/OpenAPI.
 
 ### QA / Testing Specialist
 *INE (Instituto Nacional Electoral) | Ene 2025 – May 2025*
