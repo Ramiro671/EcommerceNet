@@ -42,6 +42,8 @@ Ingeniero en Sistemas Computacionales con más de 9 años de experiencia en desa
 ### EcommerceNet — Tienda online fullstack con ASP.NET Core 10 + Vue.js 3
 [github.com/Ramiro671/EcommerceNet](https://github.com/Ramiro671/EcommerceNet) | Stack: .NET 10, Vue.js 3, SQL Server, MongoDB, Docker, AWS
 
+Proyecto personal fullstack que integra y consolida la experiencia acumulada en 9+ años de desarrollo de software en los sectores gubernamental y financiero:
+
 - Diseñé e implementé API REST con 18 endpoints en ASP.NET Core 10 aplicando Clean Architecture en 4 capas (Core, Data, API, Tests), sin dependencias circulares entre capas.
 - Desarrollé frontend SPA con Vue.js 3 (Composition API, Pinia, Vue Router) y página legacy con jQuery, consumiendo la misma API REST.
 - Implementé autenticación JWT con roles (Admin/Cliente), Entity Framework Core Code First con Fluent API, SQL Server e integración con MongoDB para historial de búsquedas.
@@ -55,49 +57,45 @@ Ingeniero en Sistemas Computacionales con más de 9 años de experiencia en desa
 ### Profesional Especialista en Desarrollo de Sistemas
 *INE (Instituto Nacional Electoral) | Nov 2025 – Actual*
 
-- Analicé y diseñé componentes de sistemas de información críticos para procesos electorales institucionales.
-- Construí módulos en C# y ASP.NET Core siguiendo estándares de arquitectura y normativas internas de la institución.
+- Desarrollé módulos con ASP.NET Core y Entity Framework Core, consolidando la evolución natural desde el stack ASP.NET MVC de proyectos anteriores.
+- Construí interfaces con Vue.js 3 y JavaScript ES6+, aplicando el dominio previo de jQuery en un framework frontend contemporáneo.
+- Implementé prácticas DevOps con Docker y CI/CD en proyectos institucionales, siguiendo estándares de arquitectura y normativas internas.
 - Documenté especificaciones técnicas y colaboré en revisiones de código con el equipo de desarrollo.
-- Desarrollé proyecto fullstack EcommerceNet (ASP.NET Core 10, Vue.js 3, SQL Server, MongoDB) aplicando Clean Architecture con 4 capas y 23 pruebas unitarias automatizadas con xUnit.
-- Implementé CI/CD con GitHub Actions y desplegué en AWS (Elastic Beanstalk + S3) utilizando contenedores Docker con build multi-stage.
-- Diseñé API REST con 18 endpoints, autenticación JWT con roles (Admin/Cliente), Entity Framework Core Code First y documentación Swagger/OpenAPI.
 
 ### QA / Testing Specialist
 *INE (Instituto Nacional Electoral) | Ene 2025 – May 2025*
 
-- Diseñé y ejecuté planes de prueba (funcional, regresión y UAT) para sistemas web y APIs REST de gestión electoral.
-- Documenté casos de prueba y reportes de defectos, mejorando la tasa de detección de bugs antes de producción.
-- Colaboré con equipos de desarrollo para reproducir y validar la corrección de incidencias críticas.
+- Diseñé y ejecuté planes de prueba (funcional, regresión y UAT) con cobertura de flujos críticos para sistemas web y APIs REST de gestión electoral.
+- Documenté casos de prueba bajo el estándar AAA y gestioné reportes de defectos hasta su resolución, mejorando la tasa de detección de bugs antes de producción.
+- Apliqué técnicas de prueba automatizada para complementar la validación manual en pipelines de integración continua.
 
 ### Coordinador de Proyectos de Desarrollo de Software
 *INE (Instituto Nacional Electoral) | Feb 2024 – Dic 2024*
 
-- Coordiné y supervisé proyectos tecnológicos con equipos multidisciplinarios aplicando metodologías ágiles, asegurando entrega en tiempo y forma.
-- Validé entregables de desarrollo contra requerimientos funcionales y no funcionales, reduciendo retrabajo en etapas avanzadas.
-- Lideré comunicación técnica con stakeholders para alinear requerimientos, priorizar backlog y reportar avances de proyecto.
+- Definí estándares de arquitectura y buenas prácticas para el equipo, realizando revisiones de código y asegurando cumplimiento de requerimientos funcionales y no funcionales.
+- Coordiné equipos multidisciplinarios con Scrum, gestionando backlog, sprints y comunicación con stakeholders para reportar avances de proyecto.
+- Validé entregables técnicos contra criterios de aceptación, reduciendo retrabajo en etapas avanzadas del ciclo de desarrollo.
 
 ### Desarrollador de Software
 *Finasist / Abracadabra Asesores SC | Dic 2021 – Ene 2024*
 
-- Desarrollé módulos en C# y ASP.NET MVC para sistema de información financiera orientado al financiamiento de activos y gestión de créditos.
-- Implementé consultas complejas con LINQ y T-SQL sobre SQL Server para generación de reportes financieros y cálculo de tablas de amortización.
-- Optimicé procedimientos almacenados y consultas SQL Server, mejorando tiempos de respuesta en funciones críticas del sistema.
-- Integré módulos con servicios web (ASP.NET Web Services) y mantuve documentación técnica actualizada.
+- Desarrollé módulos en C# y ASP.NET MVC con arquitectura en capas para sistema financiero, implementando consultas LINQ avanzadas y T-SQL para cálculo de tablas de amortización y reportes de crédito.
+- Integré servicios web (APIs REST y ASP.NET Web Services) y optimicé procedimientos almacenados en SQL Server, mejorando tiempos de respuesta en funciones críticas del sistema.
+- Apliqué separación de responsabilidades en capas de datos, negocio y presentación, estableciendo la base para patrones de repositorio y diseño limpio.
 
 ### Analista de Desarrollo
 *Inbursa | Mar 2021 – Dic 2021*
 
-- Mantuve y optimicé tienda e-commerce corporativa con ASP.NET MVC, jQuery y SQL Server, soportando más de 500 usuarios internos.
-- Coordiné el seguimiento de desarrollo de módulos para cajero automático y aplicación de mercadotecnia, actuando como enlace entre negocio y desarrollo.
-- Analicé requerimientos funcionales y documenté especificaciones técnicas para la implementación de nuevas funcionalidades.
+- Mantuve y optimicé tienda e-commerce corporativa con ASP.NET MVC, jQuery y SQL Server, implementando consultas transaccionales para gestión de carritos, productos y pedidos con más de 500 usuarios internos.
+- Desarrollé nuevas funcionalidades aplicando el patrón MVC y documenté especificaciones técnicas para la implementación de nuevas funcionalidades.
+- Actué como enlace técnico entre negocio y desarrollo para módulos de cajero automático y aplicación de mercadotecnia.
 
 ### Subdirector de Área — Tecnologías de la Información
 *Comisión Nacional de Hidrocarburos (CNH) | Jul 2016 – Feb 2021*
 
-- Desarrollé sistema interno de gestión de tickets y portal de consulta de Demanda de Bienes, Servicios y Capital Humano con C#, HTML, CSS, JavaScript y SQL Server.
-- Implementé y administré Google Analytics para medir el tráfico y comportamiento de usuarios en portales institucionales, generando reportes periódicos para la dirección.
-- Diseñé y construí páginas de consulta de información institucional, mejorando la accesibilidad a datos regulatorios para áreas internas.
-- Gestioné el área de TI durante 4.5 años, coordinando la entrega de soluciones tecnológicas y atendiendo requerimientos de múltiples áreas de la Comisión.
+- Desarrollé sistema interno de gestión de tickets y portal de consulta institucional con C#, JavaScript y jQuery, implementando consultas SQL Server para reportes y administrando el ciclo de vida completo en IIS.
+- Construí páginas de consulta con HTML5, CSS3 y JavaScript, e implementé Google Analytics para medir tráfico y comportamiento de usuarios en portales regulatorios.
+- Gestioné el área de TI durante 4.5 años, coordinando la entrega de soluciones tecnológicas para múltiples áreas de la Comisión.
 
 ---
 
