@@ -17,7 +17,7 @@
 
 **ARN** — Amazon Resource Name. Identificador único de un recurso en AWS. En `bucket-policy.json`: `"Resource": "arn:aws:s3:::ecommercenet-ramiro671/*"`.
 
-**AWS** — Amazon Web Services. Plataforma de servicios en la nube de Amazon. El proyecto usa Elastic Beanstalk (backend) y S3 (frontend). DaCodes es AWS Partner.
+**AWS** — Amazon Web Services. Plataforma de servicios en la nube de Amazon. El proyecto usa Elastic Beanstalk (backend) y S3 (frontend). El proyecto se despliega en AWS.
 
 **BCrypt** — Algoritmo de hashing de contraseñas diseñado para ser lento y resistente a ataques de fuerza bruta. Incluye un salt aleatorio y un work factor configurable. Usado en `AuthServicio.cs`.
 
@@ -85,7 +85,7 @@
 
 **JWT** — JSON Web Token. Estándar para tokens de autenticación. Tiene 3 partes: Header + Payload + Signature, separadas por puntos. Firmado con HMAC-SHA256. Generado en `AuthServicio.cs`, validado en `Program.cs`.
 
-**LATAM** — Latin America. Término geográfico. DaCodes tiene presencia en México y LATAM. Relevante para el contexto de la empresa donde se aplica este proyecto.
+**LATAM** — Latin America. Término geográfico. El mercado objetivo es México y LATAM. Relevante para el contexto de la empresa donde se aplica este proyecto.
 
 **LINQ** — Language Integrated Query. Sistema de consultas integrado en C# que permite consultar colecciones y bases de datos con sintaxis de C#. EF Core traduce LINQ a SQL. Ampliamente usado en los repositorios.
 
@@ -107,11 +107,11 @@
 
 **PaaS** — Platform as a Service. Modelo cloud donde el proveedor gestiona la infraestructura y el SO; tú solo despligas la app. Elastic Beanstalk es PaaS: tú subes el Dockerfile, AWS gestiona EC2, load balancer, health checks.
 
-**PM** — Project Manager. Rol de gestión de proyectos. DaCodes tiene PMs en cada Studio/Pod.
+**PM** — Project Manager. Rol de gestión de proyectos. Los equipos de pods tienen PMs en cada Studio/Pod.
 
 **PoLP** — Principle of Least Privilege. Principio de seguridad que indica dar a cada usuario/proceso solo los permisos mínimos necesarios. Aplicado al crear el usuario IAM `ecommercenet-deploy`.
 
-**QA** — Quality Assurance. Proceso de garantía de calidad del software. DaCodes tiene QA como parte de su oferta de servicios (Software Engineering & QA Studio).
+**QA** — Quality Assurance. Proceso de garantía de calidad del software. El área de QA es parte de los servicios del studio (Software Engineering & QA Studio).
 
 **RDS** — Relational Database Service. Servicio de base de datos relacional gestionado de AWS. Opción para SQL Server en producción (en vez de InMemory). Mencionado en docs como alternativa de producción real.
 
@@ -265,7 +265,7 @@
 
 **IAM** — Identity and Access Management. Servicio para gestionar usuarios, grupos, roles y permisos en AWS. Nunca usar el usuario root; crear usuario `ecommercenet-deploy` con permisos mínimos.
 
-**Lambda** — Servicio de funciones serverless de AWS. No usado en el proyecto pero relevante para DaCodes (AWS Migration Pod). Ejecuta código sin gestionar servidores.
+**Lambda** — Servicio de funciones serverless de AWS. No usado en el proyecto pero relevante para arquitecturas serverless en AWS. Ejecuta código sin gestionar servidores.
 
 **RDS** — Relational Database Service. Servicio de bases de datos relacionales gestionado de AWS. Soporte para SQL Server, MySQL, PostgreSQL. En el proyecto se usa InMemory en vez de RDS para simplificar el demo.
 
@@ -889,31 +889,31 @@
 
 ---
 
-## 14. Términos de DaCodes
+## 14. Términos de la industria tech y modelos de trabajo
 
-**AI & Data Studio** — Studio de DaCodes especializado en soluciones de inteligencia artificial, machine learning y análisis de datos. Incluye el GenAI Accelerator.
+**AI & Data Studio** — Tipo de equipo especializado en soluciones de inteligencia artificial, machine learning y análisis de datos. Incluye el GenAI Accelerator.
 
-**AWS Migration Pod** — Equipo especializado de DaCodes que ayuda a empresas a migrar sus sistemas on-premise a AWS con arquitectura cloud moderna. DaCodes es AWS Partner oficial.
+**AWS Migration Pod** — Equipo especializado de empresas tech que ayuda a empresas a migrar sus sistemas on-premise a AWS con arquitectura cloud moderna. Las empresas AWS Partner oficiales.
 
-**Cloud & DevOps Studio** — Studio de DaCodes enfocado en infraestructura cloud (AWS), DevOps, CI/CD y arquitectura de sistemas distribuidos.
+**Cloud & DevOps Studio** — Tipo de equipo enfocado en infraestructura cloud (AWS), DevOps, CI/CD y arquitectura de sistemas distribuidos.
 
-**DaCoders** — Nombre coloquial para los empleados de DaCodes. "Ser un DaCoder" implica cultura de aprendizaje continuo y excelencia técnica.
+**DaCoders** — Nombre coloquial para empleados de empresas que usan el modelo de Studios/Pods. Implica cultura de aprendizaje continuo y excelencia técnica.
 
-**Discovery Sprint** — Metodología de DaCodes para definir el alcance y la arquitectura de un producto antes de comenzar el desarrollo. Parte del proceso del Launch Pod.
+**Discovery Sprint** — Metodología ágil para definir el alcance y la arquitectura de un producto antes de comenzar el desarrollo. Parte del proceso del Launch Pod.
 
-**GenAI Accelerator** — Servicio/herramienta de DaCodes para acelerar la adopción de IA Generativa en empresas clientes. Parte del AI & Data Studio.
+**GenAI Accelerator** — Servicio/herramienta para acelerar la adopción de IA Generativa en empresas clientes. Parte del AI & Data Studio.
 
-**Great Place to Work** — Certificación de cultura organizacional. DaCodes tiene esta certificación — indicador de ambiente laboral positivo.
+**Great Place to Work** — Certificación de cultura organizacional. Esta certificación — indicador de ambiente laboral positivo.
 
-**ISO 27001** — Estándar internacional de seguridad de la información. DaCodes está certificado, lo que implica procesos rigurosos de seguridad para proyectos de clientes.
+**ISO 27001** — Estándar internacional de seguridad de la información. Esta certificación implica procesos rigurosos de seguridad para proyectos de clientes.
 
-**Launch Pod** — Equipo de DaCodes que construye MVPs y productos nuevos desde cero para startups y empresas. Fullstack development desde ideación hasta producción.
+**Launch Pod** — Modelo de equipo que construye MVPs y productos nuevos desde cero para startups y empresas. Fullstack development desde ideación hasta producción.
 
-**Product Strategy & Design Studio** — Studio de DaCodes enfocado en estrategia de producto, UX/UI design y discovery. Trabaja con los Pods para definir qué construir.
+**Product Strategy & Design Studio** — Tipo de equipo enfocado en estrategia de producto, UX/UI design y discovery. Trabaja con los Pods para definir qué construir.
 
-**Software Engineering & QA Studio** — Studio de DaCodes enfocado en desarrollo de software de alta calidad, arquitectura y aseguramiento de calidad. El más grande de los Studios.
+**Software Engineering & QA Studio** — Tipo de equipo enfocado en desarrollo de software de alta calidad, arquitectura y aseguramiento de calidad.
 
-**Studios** — La forma en que DaCodes organiza sus equipos especializados: Software Engineering & QA, Cloud & DevOps, AI & Data, Product Strategy & Design. Cada Studio tiene Pods.
+**Studios** — Forma de organizar equipos especializados en empresas tech modernas: Software Engineering & QA, Cloud & DevOps, AI & Data, Product Strategy & Design. Cada Studio tiene Pods.
 
 ---
 

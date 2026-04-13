@@ -27,7 +27,7 @@ builder.Services.AddSwaggerGen(opciones =>
     {
         Title = "EcommerceNet API",
         Version = "v1",
-        Description = "API REST para tienda en línea — Proyecto de estudio DaCodes"
+        Description = "API REST para tienda en línea — Proyecto de portafolio profesional"
     });
 
     // Botón "Authorize" en Swagger para pegar el token JWT

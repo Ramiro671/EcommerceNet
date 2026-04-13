@@ -1,6 +1,6 @@
 # Resumen Ejecutivo — EcommerceNet
 
-> Documento de referencia rápida para la entrevista en DaCodes.
+> Documento de referencia rápida para la entrevista técnica.
 > Fecha: 2026-04-09
 
 ---
@@ -8,7 +8,7 @@
 ## 1. Descripción del proyecto (3 líneas)
 
 EcommerceNet es una tienda online fullstack construida en 5 días para demostrar dominio
-del stack técnico de la vacante **Senior Fullstack .NET & Vue.js Developer en DaCodes**.
+del stack técnico de la vacante **Senior Fullstack .NET & Vue.js Developer**.
 Incluye backend ASP.NET Core .NET 10 con Clean Architecture, frontend Vue.js 3, CI/CD con
 GitHub Actions, y deploy en producción en AWS (Elastic Beanstalk + S3).
 
@@ -133,7 +133,7 @@ GitHub Actions, y deploy en producción en AWS (Elastic Beanstalk + S3).
 
 ---
 
-## 8. Las 10 preguntas más probables de DaCodes (respuesta en 2 líneas)
+## 8. Las 10 preguntas más probables de entrevista técnica (respuesta en 2 líneas)
 
 ### P1: "¿Qué es Clean Architecture?"
 
@@ -180,9 +180,9 @@ el estado directamente. Cada store tiene state (ref), getters (computed) y actio
 EB es PaaS — gestiona la instancia EC2, el load balancer, el auto-scaling y el deploy automáticamente.
 Con EC2 tendrías que configurar todo manualmente. EB es 2 comandos: `eb init` + `eb create`.
 
-### P10: "¿Qué hace DaCodes?"
+### P10: "¿Qué sabes de la empresa?"
 
-DaCodes tiene 4 Studios especializados: Software Engineering & QA (con Launch Pod), Cloud & DevOps
+Algunas empresas tech tienen Studios especializados: Software Engineering & QA (con Launch Pod), Cloud & DevOps
 (AWS Partner, Migration Pod), AI & Data (GenAI Accelerator), y Product Strategy & Design.
 Este proyecto demuestra el stack exacto que usan en el Software Engineering & Cloud Studio.
 

@@ -24,7 +24,7 @@
 14. [RDS — bases de datos relacionales en AWS](#14-rds--bases-de-datos-relacionales-en-aws)
 15. [CloudFront — CDN de AWS](#15-cloudfront--cdn-de-aws)
 16. [AWS CLI — controlar AWS desde la terminal](#16-aws-cli--controlar-aws-desde-la-terminal)
-17. [DaCodes Studios y el modelo de Pods](#17-dacodes-studios-y-el-modelo-de-pods)
+17. [Modelos de Studios y Pods en empresas tech](#17-modelos-de-studios-y-pods-en-empresas-tech)
 18. [Análisis completo del Dockerfile de EcommerceNet](#18-análisis-completo-del-dockerfile-de-ecommercenet)
 19. [Análisis completo del ci-cd.yml de EcommerceNet](#19-análisis-completo-del-ci-cdyml-de-ecommercenet)
 20. [Análisis completo del docker-compose.yml de EcommerceNet](#20-análisis-completo-del-docker-composeyml-de-ecommercenet)
@@ -357,9 +357,9 @@ Si algo falla, el sistema notifica inmediatamente. El código "roto" no llega a 
 **CD — Continuous Deployment (Despliegue Continuo)**
 Si todas las pruebas pasan, el sistema automáticamente actualiza producción sin intervención humana.
 
-### Por qué importa para DaCodes
+### Por qué importa en equipos ágiles
 
-DaCodes usa el modelo "Launch Pod" donde QA y DevOps están integrados en el equipo desde el primer día. El CI/CD permite que QA valide automáticamente cada cambio sin revisar código manualmente.
+El modelo "Launch Pod" donde QA y DevOps están integrados en el equipo desde el primer día. El CI/CD permite que QA valide automáticamente cada cambio sin revisar código manualmente.
 
 ### El flujo en EcommerceNet
 
@@ -450,13 +450,13 @@ Servidores de Amazon que tú alquilas. En lugar de comprar y mantener tu propio 
 
 ### Por qué AWS
 
-AWS tiene el 33% del mercado de cloud. **DaCodes es AWS Partner** — sus clientes piden AWS específicamente.
+AWS tiene el 33% del mercado de cloud. **Las empresas con certificación AWS Partner** — sus clientes piden AWS específicamente.
 
 ### Regiones y Zonas de Disponibilidad
 
 AWS divide el mundo en **regiones** (ej: `us-east-1` = Norte de Virginia). Cada región tiene múltiples data centers físicamente separados (Zonas de Disponibilidad).
 
-**Para la entrevista:** "Elegí `us-east-1` porque es la región más antigua, tiene más servicios disponibles y menor latencia para EE.UU. — mercado principal de DaCodes."
+**Para la entrevista:** "Elegí `us-east-1` porque es la región más antigua, tiene más servicios disponibles y menor latencia para EE.UU. — mercado principal de empresas tech."
 
 ### Free Tier — qué es gratis (12 meses)
 
@@ -727,9 +727,9 @@ aws sts get-caller-identity              # ver con qué usuario estás autentica
 
 ---
 
-## 17. DaCodes Studios y el modelo de Pods
+## 17. Modelos de Studios y Pods en empresas tech
 
-### Los 4 Studios de DaCodes
+### Los 4 Studios en empresas tech
 
 | Studio | Qué hace | Pod relevante |
 |--------|----------|--------------|
@@ -750,7 +750,7 @@ Launch Pod típico:
 └── 1 Tech Lead / Scrum Master
 ```
 
-### Lo que DaCodes busca en un Senior Fullstack
+### Lo que busca una empresa tech en un Senior Fullstack
 
 | Competencia | Evidencia en EcommerceNet |
 |-------------|--------------------------|
@@ -1005,7 +1005,7 @@ Docker los crea automáticamente en el primer `up`. En Windows: `C:\ProgramData\
 | **Multi-stage build** | Dockerfile con múltiples etapas `FROM` para reducir el tamaño final |
 | **PaaS** | Platform as a Service — plataforma gestionada (Elastic Beanstalk) |
 | **Pipeline** | Secuencia automatizada de pasos para CI/CD |
-| **Pod** | Equipo pequeño autónomo en el modelo de DaCodes |
+| **Pod** | Equipo pequeño autónomo en el modelo ágil de pods |
 | **RDS** | Relational Database Service — bases de datos gestionadas en AWS |
 | **Registry** | Repositorio de imágenes Docker |
 | **Region** | Zona geográfica de AWS (ej: `us-east-1`) |
@@ -1044,7 +1044,7 @@ Docker los crea automáticamente en el primer `up`. En Windows: `C:\ProgramData\
 ### Sobre AWS
 
 **"¿Tienes experiencia con AWS?"**
-> Sí. Desplegué EcommerceNet en AWS: la API en Elastic Beanstalk con Docker y el frontend como hosting estático en S3. Configuré IAM con un usuario de deploy con permisos mínimos. Sé que DaCodes es AWS Partner y usa el modelo AWS Migration Pod — mi experiencia sigue exactamente esa filosofía: containerizar, automatizar y migrar.
+> Sí. Desplegué EcommerceNet en AWS: la API en Elastic Beanstalk con Docker y el frontend como hosting estático en S3. Configuré IAM con un usuario de deploy con permisos mínimos. Sé que Las empresas con certificación AWS Partner y usa el modelo AWS Migration Pod — mi experiencia sigue exactamente esa filosofía: containerizar, automatizar y migrar.
 
 **"¿Por qué Elastic Beanstalk en lugar de EC2 directo?"**
 > Elastic Beanstalk es PaaS — subo el Dockerfile y AWS gestiona el EC2, el load balancer, el auto-scaling y los deploys. Con EC2 directo tendría que instalar .NET manualmente, configurar nginx, gestionar SSL. Para una demo o MVP, EB es mucho más rápido y entra en el Free Tier.

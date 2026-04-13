@@ -2,7 +2,7 @@
 
 > **Rama Git:** `dia-05/deploy-aws`  
 > **Método:** 16 Pomodoros de 25 min (5 min descanso entre cada uno)  
-> **Objetivo:** Pulir la app, desplegarla en AWS (DaCodes es AWS Partner), CI/CD con GitHub Actions, y simulacro completo de entrevista.
+> **Objetivo:** Pulir la app, desplegarla en AWS (Las empresas con certificación AWS Partner), CI/CD con GitHub Actions, y simulacro completo de entrevista.
 
 ---
 
@@ -21,7 +21,7 @@
 | 9 | AWS | Configurar RDS (SQL Server) o usar SQLite para demo |
 | 10 | AWS | Deploy del frontend en S3 + CloudFront (estático) |
 | 11 | README | Actualizar README con capturas, URLs de deploy, instrucciones |
-| 12 | Entrevista | Investigar DaCodes: Studios, Pods, clientes, cultura |
+| 12 | Entrevista | Investigar empresa target: Studios, Pods, clientes, cultura |
 | 13 | Entrevista | Repasar preguntas técnicas C# / .NET / SQL / Vue.js |
 | 14 | Entrevista | Simulacro de entrevista ronda 1: RH |
 | 15 | Entrevista | Simulacro de entrevista ronda 2: técnica con Senior |
@@ -173,7 +173,7 @@ git push origin desarrollo
 > - **CI (Continuous Integration):** Cada push compila y ejecuta pruebas automáticamente. Si algo falla, lo sabes inmediatamente — no cuando el código llega a producción.
 > - **CD (Continuous Deployment):** Si todo pasa, el código se despliega automáticamente al servidor.
 >
-> En DaCodes usan el modelo "Launch Pod" donde QA y DevOps están embebidos en el equipo.
+> En empresas tech se usa el modelo "Launch Pod" donde QA y DevOps están embebidos en el equipo.
 > El pipeline de CI/CD es parte fundamental de ese modelo.
 
 ---
@@ -261,7 +261,7 @@ docker-compose up --build
 ```
 
 > **¿Por qué Docker?**
-> DaCodes usa Docker en su modelo "AWS Migration Pod" para containerizar aplicaciones
+> El modelo "AWS Migration Pod" para containerizar aplicaciones
 > antes de migrarlas a AWS. Tener un Dockerfile demuestra que entiendes el flujo DevOps completo:
 > código → container → cloud.
 
@@ -381,7 +381,7 @@ aws s3 sync src/EcommerceNet.Web/dist/ s3://ecommercenet-ramiro671
 
 > **Para la entrevista:**
 > "Desplegué la API en Elastic Beanstalk con Docker y el frontend como sitio estático en S3.
-> DaCodes usa el modelo AWS Migration Pod — este es exactamente ese flujo: containerizar
+> El modelo AWS Migration Pod — este es exactamente ese flujo: containerizar
 > la app, configurar la infraestructura en AWS, y automatizar el deploy con CI/CD."
 
 ---
@@ -421,7 +421,7 @@ Actualizar `README.md` con:
 
 ## Pomodoros 12-15 — Preparación para la entrevista (100 min)
 
-### Pomodoro 12 — Investigar DaCodes
+### Pomodoro 12 — Investigar la empresa target
 
 **Datos clave de la empresa:**
 
@@ -516,7 +516,7 @@ Actualizar `README.md` con:
 **"Cuéntame de ti y tu experiencia."**
 > Soy desarrollador con experiencia en el stack .NET y Vue.js. He trabajado con ASP.NET Core para APIs REST, Entity Framework para acceso a datos con SQL Server, y Vue.js 3 con Composition API para frontends interactivos. También tengo experiencia con jQuery en contextos de mantenimiento de sistemas legacy con ASP.NET MVC.
 
-**"¿Por qué DaCodes?"**
+**"¿Por qué esta empresa?"**
 > Me atrae su modelo de Studios especializados — especialmente Software Engineering & QA con el Launch Pod donde QA y DevOps están integrados desde el día uno. También que son AWS Partners, lo cual se alinea con mi experiencia reciente desplegando aplicaciones en AWS. Y valoro que ofrezcan acceso a certificaciones y clases de inglés.
 
 **"¿Cuál es tu expectativa salarial?"**
@@ -553,22 +553,22 @@ git merge desarrollo
 git push origin main
 
 # Tag de versión
-git tag -a v1.0.0 -m "v1.0.0 — EcommerceNet completo para entrevista DaCodes"
+git tag -a v1.0.0 -m "v1.0.0 — EcommerceNet completo para entrevista técnica"
 git push origin v1.0.0
 ```
 
 ---
 
-## Simulador de entrevista DaCodes — Día 5
+## Simulador de entrevista técnica — Día 5
 
 **Pregunta 1:** "¿Tienes experiencia con AWS?"
-> "Sí, desplegué mi proyecto EcommerceNet en AWS: la API en Elastic Beanstalk con Docker y el frontend como sitio estático en S3. Configuré un pipeline de CI/CD con GitHub Actions que compila, ejecuta pruebas y publica automáticamente. Sé que DaCodes es AWS Partner y utiliza el modelo AWS Migration Pod — mi flujo de deploy sigue exactamente esa filosofía: containerizar, automatizar y migrar."
+> "Sí, desplegué mi proyecto EcommerceNet en AWS: la API en Elastic Beanstalk con Docker y el frontend como sitio estático en S3. Configuré un pipeline de CI/CD con GitHub Actions que compila, ejecuta pruebas y publica automáticamente. Sé que Las empresas con certificación AWS Partner y utiliza el modelo AWS Migration Pod — mi flujo de deploy sigue exactamente esa filosofía: containerizar, automatizar y migrar."
 
 **Pregunta 2:** "¿Qué es Docker y por qué lo usas?"
 > "Docker empaqueta la aplicación con todas sus dependencias en un contenedor que corre igual en cualquier máquina: mi laptop, el servidor de CI, o AWS. Uso un Dockerfile multi-stage: primero compilo con el SDK (imagen pesada) y luego copio solo los binarios a una imagen de runtime (ligera). Con docker-compose levanto la API y SQL Server juntos para desarrollo local."
 
 **Pregunta 3:** "¿Cómo implementaste CI/CD?"
-> "Con GitHub Actions. Tengo dos jobs: backend compila la solución .NET, ejecuta las 23 pruebas unitarias, y si estamos en main publica los artefactos. Frontend instala dependencias con npm ci y hace el build de Vue.js. Cualquier push a main o desarrollo dispara el pipeline. Si las pruebas fallan, el merge se bloquea. En DaCodes esto se alinea con el Launch Pod donde QA está embebido en el proceso desde el día uno."
+> "Con GitHub Actions. Tengo dos jobs: backend compila la solución .NET, ejecuta las 23 pruebas unitarias, y si estamos en main publica los artefactos. Frontend instala dependencias con npm ci y hace el build de Vue.js. Cualquier push a main o desarrollo dispara el pipeline. Si las pruebas fallan, el merge se bloquea. En empresa tech esto se alinea con el modelo Launch Pod donde QA está embebido en el proceso desde el día uno."
 
 ---
 
@@ -593,6 +593,6 @@ git push origin v1.0.0
 | **4** | Vue.js 3 SPA + jQuery legacy, 3 stores, 8 vistas | Web/ completo |
 | **5** | Docker, CI/CD, AWS deploy, panel admin, InMemory DB | Dockerfile, .ebignore, appsettings.Production.json |
 
-**Resultado:** Una tienda online fullstack desplegada en AWS con CI/CD, que demuestra dominio de CADA tecnología de la vacante de DaCodes.
+**Resultado:** Una tienda online fullstack desplegada en AWS con CI/CD, que demuestra dominio de CADA tecnología de la vacante Senior Fullstack .NET & Vue.js.
 
 **Tu ventaja competitiva:** Puedes abrir el repo en GitHub y mostrar commits organizados por días, pruebas pasando en CI/CD, la app corriendo en AWS, y explicar cada decisión técnica. La mayoría de candidatos solo hablan de su experiencia — tú la demuestras.

@@ -1,0 +1,118 @@
+/* ============================================================
+   CV Profesional — Ramiro López — Estilo ATS-compatible
+   Fuente: Arial/Calibri, acento #1a1a2e
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', 'Calibri', sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.45;
+  color: #222;
+  background: #fff;
+}
+
+/* ─── NOMBRE Y TÍTULO ─── */
+h1 {
+  font-size: 22pt;
+  color: #1a1a2e;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+  border: none;
+}
+
+/* subtítulo (bold paragraph bajo el h1) */
+h1 + p strong {
+  font-size: 12pt;
+  color: #1a1a2e;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* contacto (párrafo con email | tel | …) */
+h1 + p + p,
+h1 + p strong + br + em,
+p em {
+  font-size: 9.5pt;
+  color: #555;
+}
+
+/* ─── SECCIONES ─── */
+h2 {
+  font-size: 11pt;
+  font-weight: 700;
+  color: #1a1a2e;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  border-bottom: 1.5px solid #1a1a2e;
+  padding-bottom: 2px;
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+/* ─── EXPERIENCIA: puesto ─── */
+h3 {
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-top: 8px;
+  margin-bottom: 1px;
+}
+
+/* empresa | fecha (párrafo cursiva bajo h3) */
+h3 + p em {
+  font-size: 9.5pt;
+  color: #555;
+  display: block;
+  margin-bottom: 3px;
+}
+
+/* ─── LISTAS ─── */
+ul {
+  margin-left: 14px;
+  margin-bottom: 4px;
+  padding-left: 0;
+}
+
+li {
+  margin-bottom: 2px;
+  font-size: 10pt;
+  line-height: 1.4;
+}
+
+/* ─── HABILIDADES: strong label ─── */
+p strong {
+  color: #1a1a2e;
+}
+
+/* ─── PÁRRAFOS ─── */
+p {
+  margin-bottom: 4px;
+}
+
+/* ─── PROYECTO DESTACADO ─── */
+h3 a, a {
+  color: #1a1a2e;
+  text-decoration: underline;
+}
+
+/* ─── MÁRGENES DE PÁGINA ─── */
+@page {
+  margin: 18mm 18mm 14mm 18mm;
+  size: Letter;
+}
+
+/* ─── NO CORTAR SECCIONES EN EL PDF ─── */
+h2, h3 {
+  page-break-after: avoid;
+}
+
+ul, p {
+  page-break-inside: avoid;
+}

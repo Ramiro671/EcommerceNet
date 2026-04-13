@@ -34,7 +34,7 @@ Claude Code ejecutó lecturas de seis archivos antes de generar código:
 
 | Regla | Efecto en el código del Día 5 |
 |-------|-------------------------------|
-| DaCodes es AWS Partner — deploy en AWS | Dockerfile, Elastic Beanstalk, S3 |
+| Como empresa AWS Partner, deploy en AWS | Dockerfile, Elastic Beanstalk, S3 |
 | Patrón Repository + Unit of Work | ICategoriaRepositorio implementado en las 4 capas |
 | Nunca exponer entidades directamente | CategoriaDto y CrearCategoriaDto en Core/DTOs |
 | Commits en español con prefijos | `feat:`, `fix:`, `ci:`, `docs:` en cada commit |
@@ -817,4 +817,4 @@ f30379d feat: soporte InMemory DB para producción en AWS, Dockerfile en raíz p
 - **8** vistas en el frontend (7 cliente + 1 admin con 2 tabs)
 - **3** archivos de orquestación DevOps (Dockerfile, docker-compose, ci-cd.yml)
 - **17** documentos `.md` para estudio y referencia técnica
-- **100%** del stack de la vacante DaCodes implementado y documentado
+- **100%** del stack de la vacante Senior Fullstack .NET & Vue.js implementado y documentado

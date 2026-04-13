@@ -576,7 +576,7 @@ Por esto nunca pongas contraseñas u información muy sensible en el payload.
 ```json
 {
   "nameid": "5",
-  "email": "ramiro@dacodes.com",
+  "email": "ramiro@empresa.com",
   "unique_name": "Ramiro Dev",
   "role": "Cliente",
   "nbf": 1743692000,
@@ -594,7 +594,7 @@ Estos son los claims que `AuthServicio.GenerarToken` pone en el token.
 
 ### ¿Qué es un claim?
 
-Un **claim** es una afirmación sobre el usuario. Literalmente significa "el portador de este token *afirma* ser el usuario con ID 5, con email ramiro@dacodes.com, con rol Cliente". La API confía en esta afirmación porque verifica la firma del token.
+Un **claim** es una afirmación sobre el usuario. Literalmente significa "el portador de este token *afirma* ser el usuario con ID 5, con email ramiro@empresa.com, con rol Cliente". La API confía en esta afirmación porque verifica la firma del token.
 
 ### Cómo se crean (en AuthServicio)
 
@@ -605,7 +605,7 @@ var claims = new[]
     // ↑ tipo del claim: "nameidentifier"   valor: "5"
 
     new Claim(ClaimTypes.Email, usuario.Email),
-    // ↑ tipo del claim: "emailaddress"     valor: "ramiro@dacodes.com"
+    // ↑ tipo del claim: "emailaddress"     valor: "ramiro@empresa.com"
 
     new Claim(ClaimTypes.Name, usuario.Nombre),
     // ↑ tipo del claim: "name"             valor: "Ramiro Dev"
@@ -784,7 +784,7 @@ builder.Services.AddSwaggerGen(opciones =>
     {
         Title = "EcommerceNet API",
         Version = "v1",
-        Description = "API REST para tienda en línea — Proyecto DaCodes"
+        Description = "API REST para tienda en línea — Proyecto de portafolio"
     });
 
     // Definir el esquema de seguridad JWT

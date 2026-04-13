@@ -231,7 +231,7 @@ Default output format [None]: json
 
 ### ¿Por qué us-east-1?
 
-Es la región más barata y con más servicios disponibles. DaCodes tiene sede en Houston, TX — us-east-1 (Virginia) está geográficamente cerca.
+Es la región más barata y con más servicios disponibles. us-east-1 (Virginia) es la región más antigua con más servicios disponibles y mejor latencia para EE.UU.
 
 ---
 

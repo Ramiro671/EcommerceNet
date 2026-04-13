@@ -1,6 +1,6 @@
 # EcommerceNet
 
-Tienda online fullstack construida para demostrar dominio del stack requerido por la vacante **Senior Fullstack .NET & Vue.js Developer en portafolio profesional**.
+Tienda online fullstack construida para demostrar dominio del stack requerido por la vacante **Senior Fullstack .NET & Vue.js Developer**.
 
 ## Demo en vivo
 
@@ -199,9 +199,9 @@ push a main/desarrollo
 
 ---
 
-## Sobre el proyecto
+## Sobre el modelo de trabajo y el proyecto
 
-portafolio profesional es una empresa de tecnología con modelo de **Studios especializados**:
+El proyecto demuestra el dominio de un modelo de **Studios especializados** usado por empresas tech modernas:
 - **Software Engineering & QA Studio** → Clean Architecture + Launch Pod
 - **Cloud & DevOps Studio** → AWS Partner + AWS Migration Pod
 

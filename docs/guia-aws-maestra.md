@@ -655,7 +655,7 @@ CORS → CORS está configurado correctamente.
   Si algo falla, lo sabes en minutos — no cuando el código llega a producción.
 - **CD (Continuous Deployment):** Si CI pasa, el código se publica automáticamente.
 
-En DaCodes, el modelo **Launch Pod** del Software Engineering Studio incluye CI/CD desde
+El modelo **Launch Pod** del Software Engineering Studio incluye CI/CD desde
 el día uno del proyecto. Nuestro pipeline sigue esa filosofía.
 
 ### 7.2 Archivo: `.github/workflows/ci-cd.yml`
@@ -981,7 +981,7 @@ C:\Users\ramir\AppData\Local\Programs\Python\Python312\Scripts\eb.exe terminate 
 > como sitio estático en S3. Configuré un usuario IAM con permisos mínimos, las variables de
 > entorno sensibles se pasan a EB con `eb setenv` sin tocar el código, y el pipeline de CI/CD
 > con GitHub Actions compila, prueba y publica artefactos automáticamente en cada push.
-> Sé que DaCodes es AWS Partner y usa el modelo AWS Migration Pod — mi flujo de deploy
+> Sé que Las empresas con certificación AWS Partner y usa el modelo AWS Migration Pod — mi flujo de deploy
 > sigue exactamente esa filosofía: containerizar, automatizar y migrar a AWS."
 
 ### "¿Qué es Docker y por qué lo usas?"
@@ -999,12 +999,12 @@ C:\Users\ramir\AppData\Local\Programs\Python\Python312\Scripts\eb.exe terminate 
 > el build y todas las pruebas. Si algo falla, lo sabes en minutos. CD — Continuous Deployment —
 > extiende CI para publicar automáticamente si todo pasa. Mi pipeline tiene dos jobs en paralelo:
 > backend compila y ejecuta 23 pruebas con dotnet test; frontend hace npm run build. Ambos
-> deben pasar antes de que se generen los artefactos de deploy. En DaCodes esto se alinea con
+> deben pasar antes de que se generen los artefactos de deploy. En empresa tech esto se alinea con
 > el Launch Pod donde QA está embebido en el equipo desde el día uno."
 
-### "¿Conoces el modelo AWS Migration Pod de DaCodes?"
+### "¿Conoces el modelo AWS Migration Pod de empresas tech?"
 
-> "Sí. El Cloud & DevOps Studio de DaCodes ofrece el servicio AWS Migration Pod para
+> "Sí. El modelo AWS Migration Pod está diseñado para
 > ayudar a empresas a migrar sus aplicaciones a AWS. El flujo es: containerizar la app
 > con Docker, configurar la infraestructura en AWS, y automatizar el deploy con CI/CD.
 > Mi proyecto sigue exactamente ese flujo: la API está containerizada con un Dockerfile

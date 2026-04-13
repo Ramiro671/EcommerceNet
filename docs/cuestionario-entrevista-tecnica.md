@@ -1,4 +1,4 @@
-# Cuestionario de Entrevista — DaCodes Senior Fullstack .NET & Vue.js
+# Cuestionario de Entrevista Técnica — Senior Fullstack .NET & Vue.js
 > 94 preguntas basadas en el código real de EcommerceNet. Cada respuesta es memorizable en 2 lecturas.
 > Generado: 2026-04-09
 
@@ -312,25 +312,25 @@ R: Backend: `eb init` (configurar proyecto EB) → `eb create ecommercenet-api -
 
 ---
 
-## Sección 12 — DaCodes y entrevista (6 preguntas)
+## Sección 12 — Empresa y entrevista (6 preguntas)
 
-**P: ¿Qué son los 4 Studios de DaCodes?**
-R: DaCodes organiza su trabajo en 4 Studios: Launch Pod (construir productos desde cero para startups), Growth Pod (escalar productos existentes), Enterprise Pod (soluciones para grandes empresas), y AWS Migration Pod (migrar empresas a la nube AWS — DaCodes es AWS Partner). Cada Studio tiene equipos de fullstack, diseño y QA.
+**P: ¿Qué son los modelos de Studios y Pods en empresas tech?**
+R: empresa tech organiza su trabajo en 4 Studios: Launch Pod (construir productos desde cero para startups), Growth Pod (escalar productos existentes), Enterprise Pod (soluciones para grandes empresas), y AWS Migration Pod (migrar empresas a la nube AWS — Las empresas con certificación AWS Partner). Cada Studio tiene equipos de fullstack, diseño y QA.
 
 **P: ¿Qué es el Launch Pod y el AWS Migration Pod?**
 R: Launch Pod: equipo que lleva una idea a producción rápidamente — MVP en semanas. AWS Migration Pod: ayuda a empresas a migrar sus sistemas on-premise a AWS con buenas prácticas de arquitectura cloud. Este proyecto demuestra habilidades para ambos: fullstack completo (Launch) + deploy en AWS con Docker y EB (Migration).
 
 **P: "Cuéntame de tu proyecto" — respuesta de 60 segundos.**
-R: "Construí EcommerceNet en 5 días para demostrar dominio del stack de DaCodes. Es una tienda online con backend ASP.NET Core .NET 10 siguiendo Clean Architecture — 4 capas, repositorios, Unit of Work, JWT. Frontend Vue.js 3 con Pinia, carrito completo y panel admin. 23 pruebas unitarias, CI/CD con GitHub Actions y deploy en producción en AWS: la API en Elastic Beanstalk con Docker multi-stage, el frontend en S3. El proyecto está live ahora mismo — puedo mostrártelo en Swagger o en el frontend."
+R: "Construí EcommerceNet en 5 días para demostrar dominio del stack. Es una tienda online con backend ASP.NET Core .NET 10 siguiendo Clean Architecture — 4 capas, repositorios, Unit of Work, JWT. Frontend Vue.js 3 con Pinia, carrito completo y panel admin. 23 pruebas unitarias, CI/CD con GitHub Actions y deploy en producción en AWS: la API en Elastic Beanstalk con Docker multi-stage, el frontend en S3. El proyecto está live ahora mismo — puedo mostrártelo en Swagger o en el frontend."
 
-**P: "¿Por qué DaCodes?" — respuesta.**
-R: "DaCodes opera en los dos ámbitos que más me interesan: construir productos nuevos desde cero (Launch Pod) y cloud migration en AWS (Migration Pod). Ser AWS Partner significa que los proyectos tienen estándares reales de arquitectura cloud, no solo deployar en un servidor. Además, el stack .NET + Vue.js que usan es exactamente lo que construí en EcommerceNet — puedo ser productivo desde el primer día."
+**P: "¿Por qué esta empresa?" — respuesta.**
+R: "empresa tech opera en los dos ámbitos que más me interesan: construir productos nuevos desde cero (Launch Pod) y cloud migration en AWS (Migration Pod). Ser AWS Partner significa que los proyectos tienen estándares reales de arquitectura cloud, no solo deployar en un servidor. Además, el stack .NET + Vue.js que usan es exactamente lo que construí en EcommerceNet — puedo ser productivo desde el primer día."
 
 **P: "¿Cuál es tu expectativa salarial?" — respuesta.**
 R: "Estoy buscando entre [X y Y] pesos mensuales brutos, acorde al rango de mercado para Senior Fullstack .NET en CDMX / remoto. Estoy abierto a conversar el paquete completo — esquema de trabajo, prestaciones, crecimiento. Lo más importante para mí es el tipo de proyectos y el equipo." *(Ajusta los números según tu investigación de mercado antes de la entrevista.)*
 
-**P: "¿Cómo conectas tu proyecto con el modelo de DaCodes?"**
-R: "EcommerceNet replica exactamente el tipo de trabajo de DaCodes: Clean Architecture como base para proyectos escalables (Launch Pod), Docker + Elastic Beanstalk como punto de entrada a AWS (Migration Pod), CI/CD con GitHub Actions para entregas continuas. La separación en capas con interfaces facilita agregar nuevos desarrolladores al equipo sin romper el código existente — exactamente lo que necesita un equipo de pods como el de DaCodes."
+**P: "¿Cómo conectas tu proyecto con el modelo ágil de pods?"**
+R: "EcommerceNet replica exactamente el tipo de trabajo de un equipo ágil: Clean Architecture como base para proyectos escalables (Launch Pod), Docker + Elastic Beanstalk como punto de entrada a AWS (Migration Pod), CI/CD con GitHub Actions para entregas continuas. La separación en capas con interfaces facilita agregar nuevos desarrolladores al equipo sin romper el código existente — exactamente lo que necesita un equipo de pods como el de empresas tech."
 
 ---
 

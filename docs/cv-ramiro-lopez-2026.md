@@ -9,7 +9,7 @@ pdf_options:
 # RAMIRO EDUARDO LÓPEZ GARCÍA
 **Senior Fullstack .NET & Vue.js Developer**
 
-ramirolopez@outlook.com | 55 6810 0917 | [LinkedIn](https://www.linkedin.com/in/ramiro-eduardo-l%C3%B3pez-garc%C3%ADa-b7b4941a9/) | [GitHub](https://github.com/Ramiro671)
+ramirolopez@outlook.com | 55 6810 0917 | [LinkedIn](https://www.linkedin.com/in/ramiro-eduardo-lopez-garcia/) | [GitHub](https://github.com/Ramiro671)
 
 ---
 
@@ -95,7 +95,7 @@ Proyecto personal fullstack que integra y consolida la experiencia acumulada en 
 
 - Desarrollé sistema interno de gestión de tickets y portal de consulta institucional con C#, JavaScript y jQuery, implementando consultas SQL Server para reportes y administrando el ciclo de vida completo en IIS.
 - Construí páginas de consulta con HTML5, CSS3 y JavaScript, e implementé Google Analytics para medir tráfico y comportamiento de usuarios en portales regulatorios.
-- Gestioné el área de TI durante 4.5 años, coordinando la entrega de soluciones tecnológicas para múltiples áreas de la Comisión.
+- Gestioné los portales públicos de la CNH durante 4.5 años, coordinando la entrega de soluciones tecnológicas para múltiples áreas de la Comisión.
 
 ---
 

@@ -1698,7 +1698,7 @@ git push origin main
 
 ---
 
-## Simulador de entrevista DaCodes — Día 4
+## Simulador de entrevista técnica — Día 4
 
 **Pregunta 1:** "¿Cuál es la diferencia entre Options API y Composition API en Vue.js?"
 > "Options API organiza el código por tipo (data, methods, computed, watch) — funciona pero mezcla lógica de diferentes funcionalidades en secciones separadas. Composition API con `<script setup>` organiza el código por funcionalidad — todo lo relacionado al carrito está junto (estado, getters, acciones). Uso Composition API porque es más legible, reutilizable (composables) y tiene mejor soporte de TypeScript. Es el estándar en Vue 3."
@@ -1713,6 +1713,6 @@ git push origin main
 
 ## Mañana: Día 5
 
-Integración final, despliegue en AWS (DaCodes es AWS Partner), CI/CD con GitHub Actions y simulacro completo de entrevista.
+Integración final, despliegue en AWS (Las empresas con certificación AWS Partner), CI/CD con GitHub Actions y simulacro completo de entrevista.
 
 Rama: `dia-05/deploy-aws`

@@ -25,7 +25,7 @@ Día 1: capa Core (entidades, interfaces, DTOs, servicios, 22 tests). Día 2: ca
 - 1 sobre Pinia (stores, estado reactivo, getters, acciones)
 - 1 sobre Vue Router (rutas, params, guards, meta)
 - 1 sobre jQuery (selectores, AJAX, eventos, DOM)
-- 1 de entrevista DaCodes (frameworks JS, ciclo de vida, estado global)
+- 1 de entrevista técnica (frameworks JS, ciclo de vida, estado global)
 
 **"Explícame [concepto]":** Usa el código REAL de mis fuentes:
 - "Explícame Pinia" → usa carritoStore.js
@@ -34,7 +34,7 @@ Día 1: capa Core (entidades, interfaces, DTOs, servicios, 22 tests). Día 2: ca
 - "Explícame Vue Router guards" → usa router/index.js
 - "Explícame jQuery AJAX" → usa legacy.html
 
-**"Simula entrevista":** Preguntas tipo DaCodes:
+**"Simula entrevista":** Preguntas tipo empresa tech:
 - "¿Options API vs Composition API?"
 - "¿Cómo manejas estado global?"
 - "¿Tienes experiencia con jQuery?"

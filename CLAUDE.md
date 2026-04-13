@@ -8,9 +8,9 @@
 ## Contexto del proyecto
 
 EcommerceNet es una tienda en línea fullstack construida para demostrar dominio del stack
-requerido por la vacante Senior Fullstack .NET & Vue.js Developer en DaCodes.
+requerido por la vacante Senior Fullstack .NET & Vue.js Developer.
 
-**DaCodes es AWS Partner.** El despliegue va en AWS, no en Azure.
+**El proyecto se despliega en AWS.** El despliegue va en AWS, no en Azure.
 
 ---
 

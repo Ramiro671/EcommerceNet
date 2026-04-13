@@ -1091,7 +1091,7 @@ git log --oneline --graph --all
 
 ---
 
-## Simulador de entrevista DaCodes — Día 3
+## Simulador de entrevista técnica — Día 3
 
 **Pregunta 1:** "¿Qué es Entity Framework Core y cuál es la diferencia entre Code First y Database First?"
 > "EF Core es el ORM de .NET que traduce entre clases C# y tablas SQL. Con Code First escribo las entidades en C# y EF genera las tablas mediante migraciones. Con Database First parto de una BD existente y EF genera las clases. Uso Code First para proyectos nuevos como EcommerceNet, y Database First cuando mantengo sistemas legacy que ya tienen esquema definido."
@@ -1100,7 +1100,7 @@ git log --oneline --graph --all
 > "INNER JOIN solo retorna filas donde hay coincidencia en ambas tablas. LEFT JOIN retorna TODAS las filas de la tabla izquierda, y NULL donde no hay coincidencia en la derecha. En mi proyecto, uso Include de EF Core que genera JOINs automáticamente, pero si necesito un LEFT JOIN uso GroupJoin o SQL directo. Por ejemplo, para listar categorías con conteo de productos uso LEFT JOIN porque quiero ver categorías aunque no tengan productos."
 
 **Pregunta 3:** "¿Por qué usas SQL Server y MongoDB en el mismo proyecto?"
-> "SQL Server para datos transaccionales que requieren integridad referencial: productos, órdenes, usuarios, carritos. Las relaciones y transacciones ACID son críticas aquí — no quiero vender un producto sin reducir el stock. MongoDB para datos no-transaccionales como el historial de búsquedas: es flexible, no necesita esquema fijo, y es más eficiente para escrituras masivas de logs. En DaCodes, la vacante pide SQL Server como obligatorio y MongoDB como deseable, así que demuestro que puedo usar ambos donde tiene sentido."
+> "SQL Server para datos transaccionales que requieren integridad referencial: productos, órdenes, usuarios, carritos. Las relaciones y transacciones ACID son críticas aquí — no quiero vender un producto sin reducir el stock. MongoDB para datos no-transaccionales como el historial de búsquedas: es flexible, no necesita esquema fijo, y es más eficiente para escrituras masivas de logs. En empresa tech, la vacante pide SQL Server como obligatorio y MongoDB como deseable, así que demuestro que puedo usar ambos donde tiene sentido."
 
 ---
 

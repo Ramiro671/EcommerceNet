@@ -1127,7 +1127,7 @@ builder.Services.AddSwaggerGen(opciones =>
     {
         Title = "EcommerceNet API",
         Version = "v1",
-        Description = "API REST para tienda en línea — Proyecto DaCodes"
+        Description = "API REST para tienda en línea — Proyecto de portafolio"
     });
 
     // Agregar botón "Authorize" en Swagger para JWT
@@ -1180,7 +1180,7 @@ Content-Type: application/json
 
 {
   "nombre": "Ramiro Dev",
-  "email": "ramiro@dacodes.com",
+  "email": "ramiro@empresa.com",
   "password": "MiPassword123!"
 }
 
@@ -1199,7 +1199,7 @@ POST http://localhost:5000/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "ramiro@dacodes.com",
+  "email": "ramiro@empresa.com",
   "password": "MiPassword123!"
 }
 
@@ -1428,7 +1428,7 @@ git stash pop              # recuperas tus cambios
 
 ---
 
-## Simulador de entrevista DaCodes — Día 2
+## Simulador de entrevista técnica — Día 2
 
 **Pregunta 1:** "¿Cuál es la diferencia entre ASP.NET MVC y ASP.NET Core?"
 > "ASP.NET MVC corre sobre .NET Framework, solo en Windows, y genera HTML en el servidor usando vistas Razor con jQuery para interactividad. ASP.NET Core es multiplataforma, mucho más rápido, modular, y tiene inyección de dependencias nativa. En proyectos modernos lo uso como API que devuelve JSON, con el frontend en Vue.js como SPA separada. Puedo trabajar con ambos — mantener código legacy MVC y construir nuevo con Core."

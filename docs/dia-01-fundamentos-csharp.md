@@ -150,7 +150,7 @@ git checkout -b dia-01/fundamentos-csharp
 > **Concepto Git del día: Ramas de feature**
 > Cada funcionalidad se desarrolla en su propia rama. Nunca se hace commit directo a `main`.
 > El flujo es: feature branch → merge a desarrollo (pruebas) → merge a main (producción).
-> En DaCodes, esto es parte del modelo "Launch Pod" donde QA revisa en `desarrollo` antes del merge a `main`.
+> Esto es parte del modelo "Launch Pod" donde QA revisa en `desarrollo` antes del merge a `main`.
 
 ---
 
@@ -635,7 +635,7 @@ public interface IUnidadDeTrabajo : IDisposable
 > **Concepto Senior: Patrón Repository + Unit of Work**
 > El repositorio abstrae el acceso a datos. La unidad de trabajo agrupa múltiples operaciones
 > en una sola transacción. Si el checkout falla al reducir stock, la orden NO se crea.
-> En la entrevista de DaCodes te pueden preguntar: "¿Por qué no llamas a SaveChanges desde el repositorio?"
+> En la entrevista técnica te pueden preguntar: "¿Por qué no llamas a SaveChanges desde el repositorio?"
 > Respuesta: porque la unidad de trabajo garantiza atomicidad — todo se guarda o nada se guarda.
 
 ```powershell
@@ -1264,7 +1264,7 @@ git push origin main
 
 ---
 
-## Simulador de entrevista DaCodes — Día 1
+## Simulador de entrevista técnica — Día 1
 
 Basado en entrevistas reales reportadas en Glassdoor:
 
@@ -1272,7 +1272,7 @@ Basado en entrevistas reales reportadas en Glassdoor:
 > Respuesta preparada: "Mi stack principal es .NET con C# para backend (ASP.NET Core y experiencia con MVC), Vue.js para frontend, y SQL Server para datos. Uso VS Code como IDE, Git para control de versiones, y tengo experiencia consumiendo y diseñando APIs REST. También he trabajado con jQuery en proyectos legacy."
 
 **Pregunta 2:** "¿Qué es Clean Architecture y por qué la usarías?"
-> Respuesta: "Es un patrón que organiza el código en capas con una dirección estricta de dependencias. El núcleo de negocio (Core) no depende de frameworks ni bases de datos. Esto permite cambiar la infraestructura sin tocar la lógica, facilita las pruebas unitarias, y hace el código más mantenible en equipos grandes como los de DaCodes."
+> Respuesta: "Es un patrón que organiza el código en capas con una dirección estricta de dependencias. El núcleo de negocio (Core) no depende de frameworks ni bases de datos. Esto permite cambiar la infraestructura sin tocar la lógica, facilita las pruebas unitarias, y hace el código más mantenible en equipos grandes."
 
 **Pregunta 3:** "¿Qué es la inyección de dependencias y los 3 ciclos de vida en .NET?"
 > Respuesta: "Es un patrón donde las dependencias se pasan por constructor en lugar de crear instancias directamente. .NET tiene 3 ciclos: `AddTransient` crea una instancia nueva cada vez que se solicita, `AddScoped` crea una por request HTTP (ideal para repositorios y DbContext), y `AddSingleton` crea una sola instancia para toda la aplicación (ideal para configuración o caché)."
