@@ -1,6 +1,5 @@
 # Guía paso a paso — Configuración de AWS desde cero (Windows + PowerShell)
 
-> **Autor:** Documentación generada a partir del proceso real realizado en Claude Chat.  
 > **Entorno:** Windows 11, PowerShell, VS Code  
 > **Proyecto:** EcommerceNet — Tienda Fullstack .NET & Vue.js  
 > **Resultado final:**  
@@ -312,7 +311,7 @@ python.exe -m pip install --upgrade pip
 
 ### ¿Qué hacer si pegaste tus credenciales en un chat, email o repo público?
 
-Esto me pasó durante el proceso — pegué las credenciales directamente en el chat de Claude en lugar de en `aws configure`.
+Esto puede ocurrir durante el proceso — es importante ingresar las credenciales directamente en `aws configure` y no en ningún otro lugar.
 
 **Pasos para remediar:**
 

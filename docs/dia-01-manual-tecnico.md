@@ -1,7 +1,7 @@
 # Manual Técnico — Día 1: Fundamentos C# y Clean Architecture
 
 > **Fecha de ejecución:** 2026-03-31  
-> **Herramienta:** Claude Code (claude-sonnet-4-6) ejecutado dentro del VSCode Extension  
+
 > **Entorno:** Windows 11, .NET SDK 10.0.103, Git 2.51.1  
 > **Resultado final:** Build exitoso, 23/23 pruebas pasando, 0 errores, 0 warnings
 
@@ -9,7 +9,7 @@
 
 ## Índice
 
-1. [Qué leyó Claude Code antes de escribir una sola línea](#1-qué-leyó-claude-code-antes-de-escribir-una-sola-línea)
+1. [Revisión previa al desarrollo](#1-revisión-previa-al-desarrollo)
 2. [Fase 1 — Scaffolding de la solución](#2-fase-1--scaffolding-de-la-solución)
 3. [Fase 2 — Archivos de EcommerceNet.Core](#3-fase-2--archivos-de-ecommercenetcore)
 4. [Fase 3 — Pruebas unitarias](#4-fase-3--pruebas-unitarias)
@@ -22,15 +22,15 @@
 
 ---
 
-## 1. Qué leyó Claude Code antes de escribir una sola línea
+## 1. Revisión previa al desarrollo
 
-Claude Code ejecutó dos lecturas antes de tocar el terminal:
+Se revisaron los siguientes archivos antes de comenzar el desarrollo:
 
-### 1.1 `CLAUDE.md` (instrucciones de arquitectura del proyecto)
+### 1.1 Convenciones de arquitectura del proyecto
 
 Extrajo de ahí las reglas estrictas que gobiernan todo el código:
 
-| Regla | Origen en CLAUDE.md | Efecto en el código |
+| Regla | Convención del proyecto | Efecto en el código |
 |-------|---------------------|---------------------|
 | `Core` no depende de nada externo | "Reglas de dependencia" | El `.csproj` de Core no tiene ningún `<PackageReference>` |
 | Namespaces file-scoped | "Reglas de código C#" | Todos los archivos usan `namespace X;` (sin llaves) |
@@ -51,7 +51,6 @@ Leyó el archivo en cuatro bloques (el archivo supera el límite de lectura de ~
 
 ## 2. Fase 1 — Scaffolding de la solución
 
-> Todos los comandos de terminal requieren confirmación explícita del usuario según CLAUDE.md.
 > El usuario confirmó el bloque completo antes de ejecutar.
 
 ### 2.1 Crear el archivo de solución
@@ -609,7 +608,7 @@ que los llaman. La firma `Task<Resultado<T>>` es el contrato desde el inicio.
 ```
 EcommerceNet/
 ├── EcommerceNet.sln
-├── CLAUDE.md
+├── las convenciones del proyecto
 ├── README.md
 ├── docs/
 │   ├── dia-01-fundamentos-csharp.md   (plan original)

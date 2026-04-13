@@ -1,7 +1,7 @@
 # Manual Técnico — Día 3: EF Core + SQL Server + MongoDB
 
 > **Fecha de ejecución:** 2026-04-05
-> **Herramienta:** Claude Code (claude-sonnet-4-6) ejecutado dentro del VSCode Extension
+
 > **Entorno:** Windows 11, .NET SDK 10.0.103, EF Core Tools 10.0.5, Git 2.51.1
 > **Resultado final:** Build exitoso, 23/23 pruebas pasando, BD creada, 12 productos en seed data, API respondiendo
 
@@ -9,7 +9,7 @@
 
 ## Índice
 
-1. [Qué leyó Claude Code antes de escribir una sola línea](#1-qué-leyó-claude-code-antes-de-escribir-una-sola-línea)
+1. [Revisión previa al desarrollo](#1-revisión-previa-al-desarrollo)
 2. [Fase 1 — Instalación de paquetes NuGet](#2-fase-1--instalación-de-paquetes-nuget)
 3. [Fase 2 — AppDbContext: Fluent API y seed data](#3-fase-2--appdbcontext-fluent-api-y-seed-data)
 4. [Fase 3 — Repositorios concretos con EF Core](#4-fase-3--repositorios-concretos-con-ef-core)
@@ -28,11 +28,11 @@
 
 ---
 
-## 1. Qué leyó Claude Code antes de escribir una sola línea
+## 1. Revisión previa al desarrollo
 
-Claude Code ejecutó cinco lecturas antes de tocar cualquier archivo:
+Se revisaron los siguientes archivos antes de comenzar el desarrollo:
 
-### 1.1 `CLAUDE.md` (reglas de arquitectura)
+### 1.1 Convenciones de arquitectura del proyecto
 
 | Regla | Efecto en el código del Día 3 |
 |-------|-------------------------------|
@@ -66,7 +66,6 @@ Leídos para replicar el formato y nivel de detalle de la documentación.
 
 ## 2. Fase 1 — Instalación de paquetes NuGet
 
-> Todos los comandos requieren confirmación explícita del usuario según CLAUDE.md.
 > El usuario confirmó el bloque completo antes de ejecutar.
 
 ### 2.1 Comandos ejecutados

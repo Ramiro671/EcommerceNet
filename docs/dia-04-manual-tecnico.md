@@ -1,7 +1,7 @@
 # Manual Técnico — Día 4: Frontend Vue.js 3 + jQuery Legacy
 
 > **Fecha de ejecución:** 2026-04-06
-> **Herramienta:** Claude Code (claude-sonnet-4-6) ejecutado dentro del VSCode Extension
+
 > **Entorno:** Windows 11, Node.js v20.16.0, npm 10.8.1, Vite 5.4.21
 > **Resultado final:** Build exitoso (103 módulos), 0 errores, SPA completa con 7 vistas, 3 stores Pinia, página jQuery legacy
 
@@ -9,7 +9,7 @@
 
 ## Índice
 
-1. [Qué leyó Claude Code antes de escribir una sola línea](#1-qué-leyó-claude-code-antes-de-escribir-una-sola-línea)
+1. [Revisión previa al desarrollo](#1-revisión-previa-al-desarrollo)
 2. [Fase 1 — Creación del proyecto Vue.js 3](#2-fase-1--creación-del-proyecto-vuejs-3)
 3. [Fase 2 — Servicios y Stores de Pinia](#3-fase-2--servicios-y-stores-de-pinia)
 4. [Fase 3 — Componentes reutilizables](#4-fase-3--componentes-reutilizables)
@@ -25,11 +25,11 @@
 
 ---
 
-## 1. Qué leyó Claude Code antes de escribir una sola línea
+## 1. Revisión previa al desarrollo
 
-Claude Code ejecutó cinco lecturas antes de crear cualquier archivo:
+Se revisaron los siguientes archivos antes de comenzar el desarrollo:
 
-### 1.1 `CLAUDE.md` (reglas de arquitectura)
+### 1.1 Convenciones de arquitectura del proyecto
 
 | Regla | Efecto en el código del Día 4 |
 |-------|-------------------------------|
@@ -388,7 +388,7 @@ TiendaView.vue    →  carrito.mensaje (reactivo → banner verde aparece)
 | **Filtrado local** de productos | Llamar a la API en cada búsqueda | Con 12 productos es más rápido filtrar en el cliente. En producción con miles de productos se llamaría al endpoint `/buscar`. |
 | **Fuente Inter** de Google Fonts | Sistema font-stack | Inter es legible, moderna, popular en SaaS. Demuestra atención al diseño. |
 | **Proyecto manual** en vez de `create-vue` | Usar el scaffold | El CLI interactivo no se puede ejecutar sin interacción. El proyecto manual da más control y menos archivos innecesarios. |
-| **Página jQuery standalone** en `public/` | Integrarlo en Vue | CLAUDE.md especifica "una página standalone que consume la API". Debe ser accesible sin router de Vue. |
+| **Página jQuery standalone** en `public/` | Integrarlo en Vue | La convención del proyecto especifica "una página standalone que consume la API". Debe ser accesible sin router de Vue. |
 
 ---
 
@@ -427,7 +427,7 @@ npm run build
 ```
 EcommerceNet/
 ├── .gitignore                              — Excluye bin/, obj/, node_modules/, dist/
-├── CLAUDE.md                               — Reglas de arquitectura
+├── las convenciones del proyecto                               — Reglas de arquitectura
 ├── README.md                               — Descripción del proyecto
 ├── EcommerceNet.slnx                       — Solución .NET (formato .NET 9+)
 ├── docs/

@@ -981,7 +981,7 @@
 
 **`ci-cd.yml`** — Pipeline de GitHub Actions en `.github/workflows/`. Dos jobs paralelos: `backend` (dotnet build/test/publish) y `frontend` (npm ci/build). Se dispara en push a `main` y `desarrollo`.
 
-**`CLAUDE.md`** — Archivo de instrucciones para Claude Code (Anthropic). Define la arquitectura del proyecto, reglas de código, stack técnico, endpoints de la API. Leído por Claude Code en cada sesión.
+**`las convenciones del proyecto`** — Archivo de instrucciones para el desarrollador (). Define la arquitectura del proyecto, reglas de código, stack técnico, endpoints de la API. Leído por el desarrollador en cada sesión.
 
 **`docker-compose.yml`** — Orquesta múltiples contenedores para desarrollo local: API (.NET) + SQL Server + MongoDB. Define puertos, variables de entorno, volúmenes y dependencias entre servicios.
 

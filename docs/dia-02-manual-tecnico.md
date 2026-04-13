@@ -1,7 +1,7 @@
 # Manual Técnico — Día 2: ASP.NET Core Web API
 
 > **Fecha de ejecución:** 2026-04-03
-> **Herramienta:** Claude Code (claude-sonnet-4-6) ejecutado dentro del VSCode Extension
+
 > **Entorno:** Windows 11, .NET SDK 10.0.103, Git 2.51.1
 > **Resultado final:** Build exitoso, 23/23 pruebas pasando, 0 errores, 0 warnings
 
@@ -9,7 +9,7 @@
 
 ## Índice
 
-1. [Qué leyó Claude Code antes de escribir una sola línea](#1-qué-leyó-claude-code-antes-de-escribir-una-sola-línea)
+1. [Revisión previa al desarrollo](#1-revisión-previa-al-desarrollo)
 2. [Fase 1 — Instalación de paquetes NuGet](#2-fase-1--instalación-de-paquetes-nuget)
 3. [Fase 2 — Archivos nuevos en EcommerceNet.Core](#3-fase-2--archivos-nuevos-en-ecommercenetcore)
 4. [Fase 3 — Archivos del proyecto EcommerceNet.API](#4-fase-3--archivos-del-proyecto-ecommercenetapi)
@@ -23,11 +23,11 @@
 
 ---
 
-## 1. Qué leyó Claude Code antes de escribir una sola línea
+## 1. Revisión previa al desarrollo
 
-Claude Code ejecutó cuatro lecturas antes de tocar cualquier archivo:
+Se revisaron los siguientes archivos antes de comenzar el desarrollo:
 
-### 1.1 `CLAUDE.md` (reglas de arquitectura)
+### 1.1 Convenciones de arquitectura del proyecto
 
 Extrajo las reglas que gobiernan el Día 2:
 
@@ -256,7 +256,7 @@ app.MapControllers()
 
 **Ubicación:** `API/Servicios/` (NO en `Core/Servicios/`)
 
-**Por qué:** `AuthServicio` usa `BCrypt.Net-Next` y `Microsoft.IdentityModel.Tokens`. Ambos son paquetes NuGet externos. CLAUDE.md prohíbe paquetes externos en `Core`. Por lo tanto, la implementación vive en `API` (la capa de infraestructura), mientras que el contrato `IAuthServicio` permanece en `Core`.
+**Por qué:** `AuthServicio` usa `BCrypt.Net-Next` y `Microsoft.IdentityModel.Tokens`. Ambos son paquetes NuGet externos. La convención de Clean Architecture del proyecto prohíbe paquetes externos en `Core`. Por lo tanto, la implementación vive en `API` (la capa de infraestructura), mientras que el contrato `IAuthServicio` permanece en `Core`.
 
 Este patrón es estándar en Clean Architecture: Core define "qué debe hacer el sistema", las capas externas definen "cómo lo hace con tecnologías concretas".
 
@@ -498,7 +498,7 @@ Los servicios `IAuthServicio` y `ICarritoServicio` se registran como `Scoped` po
 
 ### 7.3 ¿Por qué `AuthServicio` en `API/Servicios/` y no en `Core/Servicios/`?
 
-El plan `dia-02-aspnet-api.md` sugería poner `AuthServicio` en `Core/Servicios/`. Sin embargo, `CLAUDE.md` establece como regla estricta que **Core no puede tener paquetes NuGet externos**. `AuthServicio` necesita:
+El plan `dia-02-aspnet-api.md` sugería poner `AuthServicio` en `Core/Servicios/`. Sin embargo, `las convenciones del proyecto` establece como regla estricta que **Core no puede tener paquetes NuGet externos**. `AuthServicio` necesita:
 - `BCrypt.Net-Next` (para hash de contraseñas)
 - `Microsoft.IdentityModel.Tokens` (para generar JWT)
 
@@ -506,7 +506,7 @@ Ambos son paquetes externos. La solución correcta de Clean Architecture es:
 - `IAuthServicio` → **Core** (solo define el contrato, sin dependencias externas)
 - `AuthServicio` → **API** (implementa el contrato usando tecnologías concretas)
 
-`CLAUDE.md` tiene precedencia sobre el plan del día.
+`las convenciones del proyecto` tiene precedencia sobre el plan del día.
 
 ### 7.4 ¿Por qué el middleware de errores es el PRIMER middleware del pipeline?
 

@@ -89,27 +89,24 @@ GitHub Actions, y deploy en producción en AWS (Elastic Beanstalk + S3).
 | Archivo | Descripción |
 |---------|-------------|
 | `dia-01-fundamentos-csharp.md` | Plan del Día 1: entidades, interfaces, DTOs, tests |
-| `dia-01-manual-tecnico.md` | Lo que Claude Code hizo en el Día 1 (línea por línea) |
+| `dia-01-manual-tecnico.md` | Documentación técnica del Día 1 — decisiones y código implementado |
 | `dia-01-clase-programacion.md` | Conceptos teóricos del Día 1: C#, Clean Architecture |
 | `dia-02-aspnet-api.md` | Plan del Día 2: controladores, JWT, Swagger |
-| `dia-02-manual-tecnico.md` | Lo que Claude Code hizo en el Día 2 |
+| `dia-02-manual-tecnico.md` | Documentación técnica del Día 2 — decisiones y código implementado |
 | `dia-02-clase-programacion.md` | Conceptos teóricos del Día 2: HTTP, REST, JWT |
 | `dia-03-datos.md` | Plan del Día 3: EF Core, repositorios, MongoDB |
-| `dia-03-manual-tecnico.md` | Lo que Claude Code hizo en el Día 3 |
+| `dia-03-manual-tecnico.md` | Documentación técnica del Día 3 — decisiones y código implementado |
 | `dia-03-clase-programacion.md` | Conceptos teóricos del Día 3: EF Core, SQL |
 | `dia-04-frontend.md` | Plan del Día 4: Vue.js 3, Pinia, jQuery |
-| `dia-04-manual-tecnico.md` | Lo que Claude Code hizo en el Día 4 |
+| `dia-04-manual-tecnico.md` | Documentación técnica del Día 4 — decisiones y código implementado |
 | `dia-04-clase-programacion.md` | Conceptos teóricos del Día 4: Vue 3, Composition API |
 | `dia-05-deploy-aws.md` | Plan del Día 5: Docker, CI/CD, AWS (con errores reales y fixes) |
-| `dia-05-manual-tecnico.md` | Lo que Claude Code hizo en el Día 5 (incluyendo deploy real) |
+| `dia-05-manual-tecnico.md` | Documentación técnica del Día 5 — deploy real en AWS |
 | `dia-05-clase-programacion.md` | Conceptos teóricos del Día 5: Docker, AWS, DevOps |
 | `guia-configuracion-aws-paso-a-paso.md` | Configuración de cuenta AWS, IAM, MFA, CLI |
 | `guia-deploy-aws.md` | Guía ejecutable de deploy (con Troubleshooting de errores reales) |
 | `guia-aws-maestra.md` | Guía unificada AWS — autosuficiente, cubre todo |
 | `resumen-proyecto-completo.md` | Este archivo — referencia rápida para entrevista |
-| `prompt-notebooklm-dia03.md` | Prompts para NotebookLM — Día 3 |
-| `prompt-notebooklm-dia04.md` | Prompts para NotebookLM — Día 4 |
-| `prompt-notebooklm-dia05.md` | Prompts para NotebookLM — Día 5 |
 
 ---
 

@@ -860,7 +860,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0
 
 ### Error 4: `aws` y `eb` no encontrados en bash shell
 
-**Contexto:** Claude Code usa el Bash tool con shell `bash`. AWS CLI y EB CLI están instalados
+**Contexto:** AWS CLI y EB CLI están instalados en el entorno de desarrollo
 en Windows pero no están en el PATH del shell bash.
 
 **Fix:**

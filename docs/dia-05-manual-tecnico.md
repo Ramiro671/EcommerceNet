@@ -1,7 +1,7 @@
 # Manual Técnico — Día 5: Docker, CI/CD, AWS y Panel de Administración
 
 > **Fecha de ejecución:** 2026-04-09
-> **Herramienta:** Claude Code (claude-sonnet-4-6) ejecutado dentro del VSCode Extension
+
 > **Entorno:** Windows 11, Docker Desktop, .NET SDK 8, Node.js 20, AWS CLI
 > **Resultado final:** Proyecto 100% completo — Dockerfile multi-stage, CI/CD con GitHub Actions, panel Admin con CRUD de productos y categorías, guía de deploy AWS
 
@@ -9,7 +9,7 @@
 
 ## Índice
 
-1. [Qué leyó Claude Code antes de escribir una sola línea](#1-qué-leyó-claude-code-antes-de-escribir-una-sola-línea)
+1. [Revisión previa al desarrollo](#1-revisión-previa-al-desarrollo)
 2. [Fase 1 — Corrección de bugs de integración](#2-fase-1--corrección-de-bugs-de-integración)
 3. [Fase 2 — Pipeline CI/CD con GitHub Actions](#3-fase-2--pipeline-cicd-con-github-actions)
 4. [Fase 3 — Dockerización con multi-stage build](#4-fase-3--dockerización-con-multi-stage-build)
@@ -26,11 +26,11 @@
 
 ---
 
-## 1. Qué leyó Claude Code antes de escribir una sola línea
+## 1. Revisión previa al desarrollo
 
-Claude Code ejecutó lecturas de seis archivos antes de generar código:
+Se revisaron los siguientes archivos antes de comenzar el desarrollo:
 
-### 1.1 `CLAUDE.md` (reglas de arquitectura)
+### 1.1 Convenciones de arquitectura del proyecto
 
 | Regla | Efecto en el código del Día 5 |
 |-------|-------------------------------|
