@@ -1,6 +1,6 @@
 # EcommerceNet
 
-Tienda online fullstack construida para demostrar dominio del stack requerido por la vacante **Senior Fullstack .NET & Vue.js Developer**.
+Tienda online fullstack con .NET 10 y Vue.js 3. Backend con Clean Architecture, JWT, SQL Server y MongoDB. Frontend SPA con Pinia y Vue Router. Contenerizado con Docker y desplegado en AWS.
 
 ## Demo en vivo
 
@@ -201,8 +201,8 @@ push a main/desarrollo
 
 ## Sobre el proyecto
 
-Proyecto personal fullstack que consolida 9+ años de experiencia con C#/.NET en un stack moderno: backend con Clean Architecture, frontend SPA, bases de datos relacionales y NoSQL, autenticación JWT, contenerización y deploy en nube.
+Fullstack con 9 años en C#/.NET. Este proyecto integra los patrones que uso en producción: Clean Architecture, repositorios genéricos, JWT sin librerías de terceros, migraciones EF Core, integración Vue + API REST, y pipeline de CI/CD automatizado.
 
 ---
 
-Licencia MIT — Proyecto de demostración técnica para proceso de entrevista.
+Licencia MIT
