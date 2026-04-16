@@ -70,7 +70,7 @@ EcommerceNet.slnx
 
 ### Prerequisitos
 
-- [.NET SDK 8.0+](https://dotnet.microsoft.com/download)
+- [.NET SDK 10.0+](https://dotnet.microsoft.com/download)
 - [SQL Server LocalDB](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb)
 - [Node.js 20+](https://nodejs.org/)
 - [MongoDB](https://www.mongodb.com/try/download/community) (opcional)
@@ -199,13 +199,9 @@ push a main/desarrollo
 
 ---
 
-## Sobre el modelo de trabajo y el proyecto
+## Sobre el proyecto
 
-El proyecto demuestra el dominio de un modelo de **Studios especializados** usado por empresas tech modernas:
-- **Software Engineering & QA Studio** → Clean Architecture + Launch Pod
-- **Cloud & DevOps Studio** → AWS Partner + AWS Migration Pod
-
-Este proyecto demuestra cada competencia del stack requerido: C#/.NET, Vue.js 3, SQL Server, MongoDB, JWT, Docker, y CI/CD en AWS.
+Proyecto personal fullstack que consolida 9+ años de experiencia con C#/.NET en un stack moderno: backend con Clean Architecture, frontend SPA, bases de datos relacionales y NoSQL, autenticación JWT, contenerización y deploy en nube.
 
 ---
 
