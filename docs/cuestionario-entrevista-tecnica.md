@@ -87,7 +87,7 @@ R: Language Integrated Query — consultas sobre colecciones en C#. En el proyec
 R: Arrange-Act-Assert. Arrange: preparar el objeto (`var p = new Producto { Stock = 10, Activo = true }`). Act: ejecutar el método (`p.ReducirStock(3)`). Assert: verificar resultado (`Assert.Equal(7, p.Stock)`). Patrón usado en todos los tests de `ProductoTests.cs`, `CarritoTests.cs`, `OrdenTests.cs`.
 
 **P: ¿Diferencia entre `[Fact]` y `[Theory]` con `[InlineData]`?**
-R: `[Fact]` = test que siempre corre igual, sin parámetros. `[Theory]` + `[InlineData(valor)]` = mismo test con múltiples conjuntos de datos (evita duplicar código de test). El proyecto usa solo `[Fact]` — 7 en `ProductoTests`, 10 en `CarritoTests`, 4 en `OrdenTests` = 21 tests (más 2 en `UnitTest1`).
+R: `[Fact]` = test que siempre corre igual, sin parámetros. `[Theory]` + `[InlineData(valor)]` = mismo test con múltiples conjuntos de datos (evita duplicar código de test). El proyecto usa solo `[Fact]` — 7 en `ProductoTests`, 10 en `CarritoTests`, 5 en `OrdenTests` = 22 tests (más 1 en `UnitTest1`).
 
 **P: ¿Qué son las excepciones? ¿`ArgumentException` vs `InvalidOperationException`?**
 R: `ArgumentException` = el parámetro es inválido (`AumentarStock(0)` lanza "La cantidad debe ser mayor a cero"). `InvalidOperationException` = la operación no es válida en el estado actual (`ReducirStock(100)` cuando `Stock = 2`, o `Cancelar()` cuando la orden ya está `Enviada`).

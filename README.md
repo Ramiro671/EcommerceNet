@@ -57,7 +57,7 @@ AWS:
 ### Capas de Clean Architecture
 
 ```
-EcommerceNet.sln
+EcommerceNet.slnx
 ├── EcommerceNet.Core    ← Capa 0: entidades, interfaces, DTOs — SIN dependencias externas
 ├── EcommerceNet.Data    ← Capa 1: EF Core, repositorios, MongoDB — depende de Core
 ├── EcommerceNet.API     ← Capa 2: controladores, JWT, Swagger — depende de Data
