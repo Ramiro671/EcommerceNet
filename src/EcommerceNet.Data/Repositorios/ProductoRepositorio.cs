@@ -68,6 +68,7 @@ public class ProductoRepositorio : RepositorioBase<Producto>, IProductoRepositor
     /// </summary>
     public async Task<IEnumerable<Producto>> ObtenerActivosAsync()
     {
+        // 🔴 BP-13: Query EF Core. Ver SQL en Output→Debug (habilitar LogTo). Inspeccionar: resultado count
         return await _contexto.Productos
             .Include(p => p.Categoria)
             .Where(p => p.Activo)

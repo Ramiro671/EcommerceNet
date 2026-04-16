@@ -26,6 +26,7 @@ public class AuthController : ControllerBase
     [HttpPost("registrar")]
     public async Task<IActionResult> Registrar([FromBody] RegistroDto dto)
     {
+        // 🔴 BP-02: Registro — DTO recibido. Inspeccionar: dto.Nombre, dto.Email, dto.Password
         var resultado = await _authServicio.RegistrarAsync(dto);
 
         if (!resultado.Exito)
@@ -41,6 +42,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
+        // 🔴 BP-06: Login — DTO recibido. Inspeccionar: dto.Email, dto.Password
         var resultado = await _authServicio.LoginAsync(dto);
 
         if (!resultado.Exito)

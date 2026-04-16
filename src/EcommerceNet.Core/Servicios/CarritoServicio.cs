@@ -28,12 +28,15 @@ public class CarritoServicio : ICarritoServicio
     public async Task<Resultado<CarritoDto>> AgregarProductoAsync(
         int usuarioId, AgregarAlCarritoDto dto)
     {
+        // 🔴 BP-21: Inicio AgregarProductoAsync. Inspeccionar: usuarioId, dto.ProductoId, dto.Cantidad
+        // 🔴 BP-22: Producto encontrado? Inspeccionar: producto (null=no existe), producto.Stock, producto.Activo
         var producto = await _uow.Productos.ObtenerPorIdAsync(dto.ProductoId);
         if (producto == null)
             return Resultado<CarritoDto>.Error("Producto no encontrado");
         if (!producto.TieneStockSuficiente(dto.Cantidad))
             return Resultado<CarritoDto>.Error($"Stock insuficiente. Disponible: {producto.Stock}");
 
+        // 🔴 BP-23: Carrito del usuario. Inspeccionar: carrito (null=primera compra), carrito?.Items.Count
         var carrito = await _uow.Carritos.ObtenerPorUsuarioAsync(usuarioId);
         bool esNuevo = carrito == null;
 
@@ -120,6 +123,7 @@ public class CarritoServicio : ICarritoServicio
         if (string.IsNullOrWhiteSpace(dto.DireccionEnvio))
             return Resultado<OrdenDto>.Error("La dirección de envío es obligatoria");
 
+        // 🔴 BP-29: Carrito para checkout. Inspeccionar: carrito.Items.Count (>0?), carrito.CalcularTotal()
         var carrito = await _uow.Carritos.ObtenerPorUsuarioAsync(usuarioId);
         if (carrito == null || carrito.EstaVacio())
             return Resultado<OrdenDto>.Error("El carrito está vacío");
@@ -135,6 +139,7 @@ public class CarritoServicio : ICarritoServicio
         if (errores.Count > 0)
             return Resultado<OrdenDto>.ErrorValidacion(errores);
 
+        // 🔴 BP-30: Crear orden. Inspeccionar: orden.NumeroOrden (vacío), orden.Total (0 antes de RecalcularTotal), orden.Estado
         // Crear la orden
         var orden = new Orden
         {
@@ -145,9 +150,11 @@ public class CarritoServicio : ICarritoServicio
 
         foreach (var item in carrito.Items)
         {
+            // 🔴 BP-31: Procesar item. Inspeccionar: item.Producto.Nombre, item.Cantidad, item.Producto.Stock ANTES de reducir
             var prod = await _uow.Productos.ObtenerPorIdAsync(item.ProductoId);
             if (prod == null) continue;
 
+            // 🔴 BP-33: Detalle de orden. Inspeccionar: detalle.PrecioUnitario, detalle.Cantidad, detalle.Subtotal
             var detalle = new OrdenDetalle
             {
                 ProductoId = item.ProductoId,
@@ -158,16 +165,18 @@ public class CarritoServicio : ICarritoServicio
             detalle.CalcularSubtotal();
             orden.Detalles.Add(detalle);
 
-            prod.ReducirStock(item.Cantidad);
+            prod.ReducirStock(item.Cantidad);  // ← F11 aquí para entrar a BP-32 en Producto.cs
             _uow.Productos.Actualizar(prod);
         }
 
         orden.RecalcularTotal();
         await _uow.Ordenes.AgregarAsync(orden);
 
+        // 🔴 BP-34: Vaciar carrito. Inspeccionar: carrito.Items.Count ANTES (>0) y DESPUÉS (0)
         carrito.Vaciar();
         _uow.Carritos.Actualizar(carrito);
 
+        // 🔴 BP-35: SAVE FINAL — TODO o NADA. Inspeccionar: retorno (entidades afectadas). Si falla, nada se guarda
         await _uow.GuardarCambiosAsync();
 
         orden.GenerarNumeroOrden();

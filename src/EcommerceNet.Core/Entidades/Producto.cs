@@ -30,6 +30,8 @@ public class Producto
     /// <summary>Reduce stock tras una compra</summary>
     public void ReducirStock(int cantidad)
     {
+        // 🔴 BP-32: REDUCIR STOCK. Inspeccionar: Stock ANTES, cantidad a reducir, Stock DESPUÉS (=Stock-cantidad)
+        // 🔴 BP-43: Stock insuficiente (si llega aquí). Inspeccionar: Stock actual, cantidad pedida
         if (!TieneStockSuficiente(cantidad))
             throw new InvalidOperationException(
                 $"Stock insuficiente para '{Nombre}'. Disponible: {Stock}, solicitado: {cantidad}");

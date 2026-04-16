@@ -91,11 +91,13 @@ public class OrdenesController : ControllerBase
     [HttpPut("{id}/cancelar")]
     public async Task<IActionResult> Cancelar(int id)
     {
+        // 🔴 BP-36: Request cancelar. Inspeccionar: id, ObtenerUsuarioId(), orden.Estado
         var orden = await _uow.Ordenes.ObtenerConDetallesAsync(id);
 
         if (orden == null)
             return NotFound(Resultado<bool>.Error("Orden no encontrada"));
 
+        // 🔴 BP-37: ¿Orden pertenece al usuario? Inspeccionar: orden.UsuarioId vs ObtenerUsuarioId()
         // Seguridad: verificar que la orden pertenece al usuario autenticado
         if (orden.UsuarioId != ObtenerUsuarioId())
             return Forbid();
@@ -104,8 +106,9 @@ public class OrdenesController : ControllerBase
         {
             // La lógica de cancelación vive en la entidad Orden (Día 1)
             // El controlador solo delega — no tiene lógica de negocio
-            orden.Cancelar();
+            orden.Cancelar();  // ← F11 para entrar a BP-38 en Orden.cs
             _uow.Ordenes.Actualizar(orden);
+            // 🔴 BP-40: Save cancelación. Inspeccionar: orden.Estado DESPUÉS (debe ser Cancelada)
             await _uow.GuardarCambiosAsync();
 
             return Ok(Resultado<bool>.Ok(true, "Orden cancelada. Stock restaurado."));

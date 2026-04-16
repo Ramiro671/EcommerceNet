@@ -1,0 +1,329 @@
+@baseUrl = http://localhost:5152/api
+@token = {{login.response.body.datos.token}}
+
+### ════════════════════════════════════════
+### FLUJO 1: AUTENTICACIÓN
+### ════════════════════════════════════════
+
+### 1.1 Registrar usuario cliente
+POST {{baseUrl}}/auth/registrar
+Content-Type: application/json
+
+{
+  "nombre": "Ramiro Test",
+  "email": "test@ecommercenet.com",
+  "password": "Test123!"
+}
+
+###
+
+### 1.2 Registrar usuario admin
+POST {{baseUrl}}/auth/registrar
+Content-Type: application/json
+
+{
+  "nombre": "Admin Test",
+  "email": "admin@ecommercenet.com",
+  "password": "Admin123!"
+}
+
+###
+
+### 1.3 Login — guarda token para los siguientes requests
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@ecommercenet.com",
+  "password": "Admin123!"
+}
+
+###
+
+### ════════════════════════════════════════
+### FLUJO 2: CATÁLOGO (público — sin token)
+### ════════════════════════════════════════
+
+### 2.1 Listar todos los productos activos
+GET {{baseUrl}}/productos
+
+###
+
+### 2.2 Obtener producto por ID
+GET {{baseUrl}}/productos/1
+
+###
+
+### 2.3 Buscar productos por nombre
+GET {{baseUrl}}/productos/buscar?termino=laptop
+
+###
+
+### 2.4 Productos por categoría
+GET {{baseUrl}}/productos/categoria/1
+
+###
+
+### ════════════════════════════════════════
+### FLUJO 3: CATEGORÍAS
+### ════════════════════════════════════════
+
+### 3.1 Listar categorías activas (público)
+GET {{baseUrl}}/categorias
+
+###
+
+### 3.2 Listar TODAS las categorías incluyendo inactivas (Admin)
+GET {{baseUrl}}/categorias/todas
+Authorization: Bearer {{token}}
+
+###
+
+### 3.3 Crear categoría (Admin)
+POST {{baseUrl}}/categorias
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Categoría Debug",
+  "descripcion": "Creada durante sesión de debugging"
+}
+
+###
+
+### 3.4 Actualizar categoría (Admin)
+PUT {{baseUrl}}/categorias/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Electrónica Actualizada",
+  "descripcion": "Categoría actualizada en debug"
+}
+
+###
+
+### 3.5 Desactivar categoría — soft delete (Admin)
+DELETE {{baseUrl}}/categorias/5
+Authorization: Bearer {{token}}
+
+###
+
+### ════════════════════════════════════════
+### FLUJO 4: ADMIN — CRUD PRODUCTOS (requiere JWT Admin)
+### ════════════════════════════════════════
+
+### 4.1 Crear producto nuevo
+POST {{baseUrl}}/productos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Producto Test Debug",
+  "descripcion": "Creado durante sesión de debugging",
+  "precio": 999.99,
+  "stock": 10,
+  "imagenUrl": "https://placehold.co/400x300?text=Debug",
+  "categoriaId": 1
+}
+
+###
+
+### 4.2 Actualizar producto existente
+PUT {{baseUrl}}/productos/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Producto Actualizado en Debug",
+  "descripcion": "Modificado durante sesión de debugging",
+  "precio": 1299.99,
+  "stock": 20,
+  "imagenUrl": "https://placehold.co/400x300?text=Updated",
+  "categoriaId": 1
+}
+
+###
+
+### 4.3 Eliminar producto (Admin)
+DELETE {{baseUrl}}/productos/13
+Authorization: Bearer {{token}}
+
+###
+
+### ════════════════════════════════════════
+### FLUJO 5: CARRITO — gestión (requiere JWT)
+### ════════════════════════════════════════
+
+### 5.1 Ver mi carrito
+GET {{baseUrl}}/carrito
+Authorization: Bearer {{token}}
+
+###
+
+### 5.2 Agregar producto al carrito
+POST {{baseUrl}}/carrito/agregar
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "productoId": 1,
+  "cantidad": 2
+}
+
+###
+
+### 5.3 Agregar segundo producto
+POST {{baseUrl}}/carrito/agregar
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "productoId": 3,
+  "cantidad": 1
+}
+
+###
+
+### 5.4 Actualizar cantidad de un producto en el carrito
+PUT {{baseUrl}}/carrito/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "cantidad": 5
+}
+
+###
+
+### 5.5 Eliminar un producto del carrito
+DELETE {{baseUrl}}/carrito/3
+Authorization: Bearer {{token}}
+
+###
+
+### 5.6 Vaciar carrito completamente
+DELETE {{baseUrl}}/carrito
+Authorization: Bearer {{token}}
+
+###
+
+### ════════════════════════════════════════
+### FLUJO 6: CHECKOUT — procesar compra
+### ════════════════════════════════════════
+
+### 6.1 Agregar productos antes del checkout
+POST {{baseUrl}}/carrito/agregar
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "productoId": 1,
+  "cantidad": 2
+}
+
+###
+
+### 6.2 Checkout — crear orden y reducir stock
+POST {{baseUrl}}/carrito/checkout
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "direccionEnvio": "Calle Debug 123, Col. Breakpoint, CDMX, CP 06600"
+}
+
+###
+
+### ════════════════════════════════════════
+### FLUJO 7: ÓRDENES
+### ════════════════════════════════════════
+
+### 7.1 Mis órdenes (del usuario autenticado)
+GET {{baseUrl}}/ordenes
+Authorization: Bearer {{token}}
+
+###
+
+### 7.2 Detalle completo de una orden
+GET {{baseUrl}}/ordenes/1
+Authorization: Bearer {{token}}
+
+###
+
+### 7.3 Cancelar orden (solo Pendiente o Pagada)
+PUT {{baseUrl}}/ordenes/1/cancelar
+Authorization: Bearer {{token}}
+
+###
+
+### ════════════════════════════════════════
+### FLUJO 8: ERRORES INTENCIONADOS (probar middleware)
+### ════════════════════════════════════════
+
+### 8.1 Sin token en endpoint protegido → espera 401
+POST {{baseUrl}}/carrito/agregar
+Content-Type: application/json
+
+{
+  "productoId": 1,
+  "cantidad": 1
+}
+
+###
+
+### 8.2 Producto inexistente → espera 404
+GET {{baseUrl}}/productos/99999
+
+###
+
+### 8.3 Datos inválidos al crear producto → espera 400 con lista de errores
+POST {{baseUrl}}/productos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "",
+  "descripcion": "Producto inválido",
+  "precio": -10,
+  "stock": -5,
+  "imagenUrl": "",
+  "categoriaId": 0
+}
+
+###
+
+### 8.4 Login con credenciales incorrectas → espera 401
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "noexiste@test.com",
+  "password": "wrongpassword"
+}
+
+###
+
+### 8.5 Email duplicado en registro → espera 400
+POST {{baseUrl}}/auth/registrar
+Content-Type: application/json
+
+{
+  "nombre": "Duplicado",
+  "email": "admin@ecommercenet.com",
+  "password": "Test123!"
+}
+
+###
+
+### 8.6 Checkout con carrito vacío → espera 400
+POST {{baseUrl}}/carrito/checkout
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "direccionEnvio": "Calle Test 123"
+}
+
+###

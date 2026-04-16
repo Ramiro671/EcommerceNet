@@ -1,0 +1,42 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": null,
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "omnisharp.enableRoslynAnalyzers": true,
+  "dotnet.defaultSolution": "EcommerceNet.slnx",
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "baseUrl": "http://localhost:5152/api",
+      "token": ""
+    }
+  },
+  "files.exclude": {
+    "**/bin": true,
+    "**/obj": true,
+    "**/node_modules": true
+  },
+  "search.exclude": {
+    "**/bin": true,
+    "**/obj": true,
+    "**/node_modules": true
+  },
+  "editor.rulers": [120],
+  "editor.tabSize": 4,
+  "[javascript]": {
+    "editor.tabSize": 2
+  },
+  "[vue]": {
+    "editor.tabSize": 2
+  }
+}

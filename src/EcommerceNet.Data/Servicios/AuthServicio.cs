@@ -31,6 +31,7 @@ public class AuthServicio : IAuthServicio
 
     public async Task<Resultado<AuthRespuestaDto>> RegistrarAsync(RegistroDto dto)
     {
+        // 🔴 BP-03: ¿Email ya existe? Inspeccionar: existe (bool), dto.Email
         // Verificar que el email no esté registrado
         var existe = await _contexto.Usuarios.AnyAsync(u => u.Email == dto.Email);
         if (existe)
@@ -41,10 +42,12 @@ public class AuthServicio : IAuthServicio
         {
             Nombre = dto.Nombre,
             Email = dto.Email,
+            // 🔴 BP-04: Hash generado. Inspeccionar: PasswordHash (comparar con dto.Password — son distintos)
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password)
         };
 
         await _contexto.Usuarios.AddAsync(usuario);
+        // 🔴 BP-05: Guardar usuario en BD. Inspeccionar: usuario.Id (debe ser 0 antes, >0 después)
         await _contexto.SaveChangesAsync();
 
         // Generar JWT y retornar
@@ -54,6 +57,7 @@ public class AuthServicio : IAuthServicio
 
     public async Task<Resultado<AuthRespuestaDto>> LoginAsync(LoginDto dto)
     {
+        // 🔴 BP-07: Buscar usuario por email. Inspeccionar: usuario (null = no existe)
         // Buscar usuario — mensaje genérico para evitar enumeración de usuarios
         var usuario = await _contexto.Usuarios
             .FirstOrDefaultAsync(u => u.Email == dto.Email);
@@ -61,6 +65,7 @@ public class AuthServicio : IAuthServicio
         if (usuario == null)
             return Resultado<AuthRespuestaDto>.Error("Credenciales incorrectas");
 
+        // 🔴 BP-08: Verificación password. Inspeccionar: resultado de Verify (true/false)
         // BCrypt.Verify compara el password ingresado contra el hash almacenado
         if (!BCrypt.Net.BCrypt.Verify(dto.Password, usuario.PasswordHash))
             return Resultado<AuthRespuestaDto>.Error("Credenciales incorrectas");
@@ -75,6 +80,7 @@ public class AuthServicio : IAuthServicio
     /// </summary>
     private AuthRespuestaDto GenerarJwt(Usuario usuario)
     {
+        // 🔴 BP-09: Claims del JWT. Inspeccionar: claims[] (NameIdentifier, Name, Email, Role)
         // Claims = datos que se incrustan dentro del token
         // El receptor puede leerlos sin consultar la BD (stateless)
         var claims = new[]
@@ -101,6 +107,7 @@ public class AuthServicio : IAuthServicio
             expires: expira,
             signingCredentials: credenciales);
 
+        // 🔴 BP-10: Token generado. Inspeccionar: token string (pegar en jwt.io), expira DateTime
         return new AuthRespuestaDto
         {
             Token = new JwtSecurityTokenHandler().WriteToken(token),

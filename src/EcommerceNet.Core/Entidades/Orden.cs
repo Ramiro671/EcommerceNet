@@ -37,12 +37,17 @@ public class Orden
     /// <summary>Cancela la orden y devuelve stock</summary>
     public void Cancelar()
     {
+        // 🔴 BP-38: Lógica de cancelación. Inspeccionar: Estado ANTES, SePuedeCancelar() (solo Pendiente/Pagada)
+        // 🔴 BP-44: No se puede cancelar (si llega aquí). Inspeccionar: Estado actual (Enviada? Entregada?)
         if (!SePuedeCancelar())
             throw new InvalidOperationException(
                 $"No se puede cancelar una orden en estado '{Estado}'");
 
         Estado = EstadoOrden.Cancelada;
         foreach (var detalle in Detalles)
+        {
+            // 🔴 BP-39: Devolver stock. Inspeccionar: detalle.Producto.Stock ANTES y DESPUÉS de AumentarStock()
             detalle.Producto?.AumentarStock(detalle.Cantidad);
+        }
     }
 }

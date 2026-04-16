@@ -42,6 +42,7 @@ public class RepositorioBase<T> : IRepositorio<T> where T : class
     /// <summary>Agregar un nuevo registro (no guarda hasta SaveChanges)</summary>
     public async Task AgregarAsync(T entidad)
     {
+        // 🔴 BP-16: EF Core Add. Inspeccionar: entidad (Id=0 antes de SaveChanges, >0 después)
         await _dbSet.AddAsync(entidad);
     }
 

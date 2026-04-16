@@ -27,6 +27,7 @@ public class Carrito
     /// </summary>
     public void AgregarProducto(Producto producto, int cantidad = 1)
     {
+        // 🔴 BP-24: Lógica de dominio. Inspeccionar: producto.Nombre, cantidad, Items.Count actual
         if (cantidad <= 0)
             throw new ArgumentException("La cantidad debe ser mayor a cero");
 
@@ -34,6 +35,7 @@ public class Carrito
             throw new InvalidOperationException(
                 $"Stock insuficiente para '{producto.Nombre}'");
 
+        // 🔴 BP-25: Item existente? Inspeccionar: existente (null=nuevo item, no null=incrementar cantidad)
         var existente = Items.FirstOrDefault(i => i.ProductoId == producto.Id);
 
         if (existente != null)

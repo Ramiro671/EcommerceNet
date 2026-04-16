@@ -36,12 +36,14 @@ public class ManejadorErroresMiddleware
     {
         try
         {
+            // 🔴 BP-01: ENTRY — toda petición pasa por aquí. Inspeccionar: contexto.Request.Path, contexto.Request.Method
             // Pasar la petición al siguiente middleware/controlador
             await _next(contexto);
         }
         catch (Exception ex)
         {
             // Si CUALQUIER parte del pipeline lanza una excepción, llegamos aquí
+            // 🔴 BP-41: EXCEPCIÓN ATRAPADA. Inspeccionar: ex.GetType().Name, ex.Message, ex.StackTrace
             _logger.LogError(ex, "Error no manejado en la petición: {Mensaje}", ex.Message);
             await ManejarExcepcionAsync(contexto, ex);
         }
@@ -55,6 +57,7 @@ public class ManejadorErroresMiddleware
     {
         contexto.Response.ContentType = "application/json";
 
+        // 🔴 BP-42: Mapeo excepción→HTTP. Inspeccionar: codigo (401? 400? 404? 500?), mensaje
         // Switch expression: cada tipo de excepción tiene su código HTTP correspondiente
         var (codigo, mensaje) = ex switch
         {

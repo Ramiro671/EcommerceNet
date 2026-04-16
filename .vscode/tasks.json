@@ -1,0 +1,112 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/EcommerceNet.slnx",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "test",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "test",
+        "${workspaceFolder}/tests/EcommerceNet.Tests/EcommerceNet.Tests.csproj",
+        "--verbosity",
+        "normal"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": "test"
+    },
+    {
+      "label": "run-api",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/src/EcommerceNet.API/EcommerceNet.API.csproj"
+      ],
+      "problemMatcher": "$msCompile",
+      "isBackground": true,
+      "options": {
+        "env": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+      }
+    },
+    {
+      "label": "run-frontend",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}/src/EcommerceNet.Web"
+      },
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "run-both",
+      "dependsOn": ["run-api", "run-frontend"],
+      "dependsOrder": "parallel",
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "docker-build",
+      "type": "shell",
+      "command": "docker build -t ecommercenet-api .",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "docker-up",
+      "type": "shell",
+      "command": "docker-compose up --build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "ef-migration",
+      "type": "shell",
+      "command": "dotnet ef migrations add ${input:migrationName} --project src/EcommerceNet.Data/EcommerceNet.Data.csproj --startup-project src/EcommerceNet.API/EcommerceNet.API.csproj",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "ef-update",
+      "type": "shell",
+      "command": "dotnet ef database update --project src/EcommerceNet.Data/EcommerceNet.Data.csproj --startup-project src/EcommerceNet.API/EcommerceNet.API.csproj",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "migrationName",
+      "type": "promptString",
+      "description": "Nombre de la migración (ej: AgregarCampoDescripcion)"
+    }
+  ]
+}

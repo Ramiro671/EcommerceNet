@@ -30,6 +30,7 @@ public class CarritoController : ControllerBase
     /// </summary>
     private int ObtenerUsuarioId()
     {
+        // 🔴 BP-19: Extraer userId del JWT. Inspeccionar: claim.Value, User.Claims (lista completa)
         var claim = User.FindFirst(ClaimTypes.NameIdentifier)
             ?? User.FindFirst("sub");
 
@@ -43,6 +44,7 @@ public class CarritoController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> ObtenerCarrito()
     {
+        // 🔴 BP-26: Ver carrito. Inspeccionar: resultado.Datos.Items, TotalProductos, Total
         var usuarioId = ObtenerUsuarioId();
         var resultado = await _carritoServicio.ObtenerCarritoAsync(usuarioId);
         return Ok(resultado);
@@ -52,6 +54,7 @@ public class CarritoController : ControllerBase
     [HttpPost("agregar")]
     public async Task<IActionResult> Agregar([FromBody] AgregarAlCarritoDto dto)
     {
+        // 🔴 BP-20: Agregar al carrito. Inspeccionar: dto.ProductoId, dto.Cantidad, usuarioId
         var usuarioId = ObtenerUsuarioId();
         var resultado = await _carritoServicio.AgregarProductoAsync(usuarioId, dto);
 
@@ -105,6 +108,7 @@ public class CarritoController : ControllerBase
     [HttpPost("checkout")]
     public async Task<IActionResult> Checkout([FromBody] CrearOrdenDto dto)
     {
+        // 🔴 BP-28: INICIO CHECKOUT. Inspeccionar: dto.DireccionEnvio, usuarioId
         var usuarioId = ObtenerUsuarioId();
         var resultado = await _carritoServicio.CheckoutAsync(usuarioId, dto);
 

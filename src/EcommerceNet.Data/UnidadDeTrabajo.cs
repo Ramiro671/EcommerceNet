@@ -53,6 +53,7 @@ public class UnidadDeTrabajo : IUnidadDeTrabajo
     /// </summary>
     public async Task<int> GuardarCambiosAsync()
     {
+        // 🔴 BP-17: SaveChanges. Inspeccionar: retorno (número de entidades afectadas en BD)
         return await _contexto.SaveChangesAsync();
     }
 

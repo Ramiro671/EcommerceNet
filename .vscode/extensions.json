@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "ms-dotnettools.csharp",
+    "ms-dotnettools.csdevkit",
+    "ms-dotnettools.vscode-dotnet-runtime",
+    "Vue.volar",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "humao.rest-client",
+    "ms-azuretools.vscode-docker",
+    "eamodio.gitlens",
+    "formulahendry.dotnet-test-explorer",
+    "ms-mssql.mssql",
+    "mongodb.mongodb-vscode"
+  ]
+}

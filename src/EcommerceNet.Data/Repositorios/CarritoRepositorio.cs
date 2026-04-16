@@ -33,6 +33,7 @@ public class CarritoRepositorio : ICarritoRepositorio
     /// </summary>
     public async Task<Carrito?> ObtenerPorUsuarioAsync(int usuarioId)
     {
+        // 🔴 BP-27: Include anidado. Inspeccionar: carrito.Items[i].Producto.Categoria (todo cargado?)
         return await _contexto.Carritos
             .Include(c => c.Items)
                 .ThenInclude(i => i.Producto)

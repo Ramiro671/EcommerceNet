@@ -150,6 +150,9 @@ if (app.Environment.IsDevelopment())
 // 4. CORS — antes de auth para que las peticiones preflight (OPTIONS) pasen
 app.UseCors("PermitirVue");
 
+// 🔴 BP-45: JWT inválido/expirado → responde 401 automáticamente.
+// Para depurar: pegar el token en jwt.io y verificar exp, iss, aud.
+// El middleware JWT Bearer devuelve 401 ANTES de llegar al controlador si el token falla.
 // 5. Autenticación — lee y valida el token JWT del header Authorization
 app.UseAuthentication();
 

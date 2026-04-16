@@ -22,6 +22,7 @@ public class ProductosController : ControllerBase
 
     public ProductosController(IUnidadDeTrabajo uow, HistorialBusquedaServicio historial)
     {
+        // 🔴 BP-11: DI — UoW e historial inyectados. Inspeccionar: uow (no debe ser null)
         _uow = uow;
         _historial = historial;
     }
@@ -34,6 +35,7 @@ public class ProductosController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> ObtenerTodos()
     {
+        // 🔴 BP-12: Lista productos. Inspeccionar: productos.Count(), si Categoria está cargada
         var productos = await _uow.Productos.ObtenerActivosAsync();
         var dtos = productos.Select(MapearADto);
         return Ok(Resultado<IEnumerable<ProductoDto>>.Ok(dtos));
@@ -90,6 +92,8 @@ public class ProductosController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Crear([FromBody] CrearProductoDto dto)
     {
+        // 🔴 BP-14: Crear producto. Inspeccionar: User.Claims, User.IsInRole("Admin"), dto
+        // 🔴 BP-15: Validaciones. Inspeccionar: errores list, dto.Nombre, dto.Precio, dto.Stock
         var errores = new List<string>();
         if (string.IsNullOrWhiteSpace(dto.Nombre))
             errores.Add("El nombre es obligatorio");
@@ -172,6 +176,7 @@ public class ProductosController : ControllerBase
         return int.TryParse(claim, out var id) ? id : null;
     }
 
+    // 🔴 BP-18: Mapeo entidad→DTO. Inspeccionar: p (entidad) vs resultado (DTO — qué campos se exponen)
     private static ProductoDto MapearADto(Producto p) => new()
     {
         Id = p.Id,
