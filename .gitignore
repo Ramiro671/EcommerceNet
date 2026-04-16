@@ -33,6 +33,11 @@ Thumbs.db
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 
+# Documentación privada (no parte del portafolio público)
+docs/
+*.pdf
+cv-*.md
+
 # Herramientas de desarrollo (no parte del proyecto)
 CLAUDE.md
 .claude/
