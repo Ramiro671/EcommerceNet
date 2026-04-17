@@ -1,156 +1,192 @@
-# Guía de Debug Local — EcommerceNet
+# Guia de Debug Local - EcommerceNet
 
-## Paso 1: Arrancar la API en modo debug
+> **El 404 en localhost:5152/ es NORMAL.** La API no tiene pagina de inicio.
+> La URL correcta es: **http://localhost:5152/swagger**
 
-1. Abrir VS Code en la carpeta `C:\Users\ramir\Source\repos\EcommerceNet`
-2. Presionar **Ctrl+Shift+D** (panel Run and Debug)
-3. En el dropdown seleccionar **Debug API (.NET)**
-4. Presionar **F5**
-5. Esperar a que en la terminal aparezca: `Now listening on: http://localhost:5152`
-6. La barra inferior de VS Code cambia a **naranja** = debug activo
+---
 
-## Paso 2: Verificar que la API responde
+## INICIO RAPIDO
 
-IMPORTANTE: La API NO tiene página en la raíz (/). Estos son los URLs correctos:
+### 1. Arrancar la API
 
-| URL | Qué muestra |
-|-----|------------|
-| http://localhost:5152/swagger | Documentación interactiva de la API |
-| http://localhost:5152/api/productos | Lista de productos en JSON |
-| http://localhost:5152/api/auth/login | Endpoint de login (solo POST) |
+En VS Code:
+- Presionar **Ctrl+Shift+D** (panel Run and Debug)
+- En el dropdown elegir **Debug API (.NET)**
+- Presionar **F5**
+
+Esperar en la terminal hasta ver:
+
+```
+Now listening on: http://localhost:5152
+```
+
+La barra inferior de VS Code se pone **naranja** = debug activo.
+
+### 2. Abrir Swagger (verificar que funciona)
 
 Abrir en el navegador: **http://localhost:5152/swagger**
-Si ves la interfaz de Swagger, la API funciona correctamente.
 
-El error "404 No se encuentra esta página" en http://localhost:5152/ es NORMAL — la API no sirve HTML en la raíz.
+Si ves la interfaz de Swagger = API funcionando correctamente.
 
-## Paso 3: Arrancar el frontend Vue.js
+**Por que 404 en localhost:5152/ ?**
+La API es solo un backend REST. No sirve paginas HTML.
+El unico HTML es el frontend en Vue.js (puerto 5173).
 
-Abrir una SEGUNDA terminal en VS Code (Ctrl+Shift+`):
+### 3. Arrancar el frontend
+
+Abrir una segunda terminal en VS Code (Ctrl+Shift+`):
+
 ```bash
 cd src/EcommerceNet.Web
 npm install
 npm run dev
 ```
 
-Esperar a que muestre: `Local: http://localhost:5173/`
-Abrir en el navegador: **http://localhost:5173**
+Esperar hasta ver:
 
-IMPORTANTE: Verificar que en `src/EcommerceNet.Web/src/services/api.js` el baseURL apunte al puerto correcto de la API:
-```javascript
-baseURL: 'http://localhost:5152/api'
+```
+Local: http://localhost:5173/
 ```
 
-Si el puerto en api.js no coincide con el puerto real de la API, cambiar api.js al puerto correcto.
+Abrir: **http://localhost:5173**
 
-## Paso 4: Verificar CORS
+---
 
-Si el frontend muestra errores de CORS en la consola del navegador (F12 → Console), verificar que Program.cs tenga el origen del frontend:
+## FLUJOS DE DEBUG CON BREAKPOINTS
 
-```csharp
-politica.WithOrigins("http://localhost:5173")
-```
+### Flujo A - Login (el mas facil)
 
-Ya está configurado. Si se cambia el puerto del frontend, actualizar Program.cs y reiniciar la API (Ctrl+Shift+F5).
+**Objetivo:** ver como el servidor recibe el email/password y devuelve un JWT.
 
-## Paso 5: Probar flujo con breakpoints
-
-### Flujo A — Login (el más simple para empezar)
-
-1. En VS Code, abrir `src/EcommerceNet.API/Controllers/AuthController.cs`
-2. Buscar el método `Login` y poner breakpoint en la primera línea (F9)
+1. Abrir `src/EcommerceNet.API/Controllers/AuthController.cs`
+2. Buscar el metodo `Login` - poner breakpoint (F9) en la primera linea
 3. Abrir `src/EcommerceNet.Data/Servicios/AuthServicio.cs`
-4. Poner breakpoint en la primera línea de `LoginAsync`
-5. En el navegador (http://localhost:5173), ir a **Iniciar sesión**
-6. Escribir: email: `admin@ecommercenet.com`, password: `Admin123!`
-7. Click en Iniciar sesión
-8. VS Code se PAUSA en el breakpoint del AuthController
-9. Inspeccionar: pasar mouse sobre `dto` → ver dto.Email y dto.Password
-10. Presionar **F11** (Step Into) → entras a AuthServicio.LoginAsync
-11. Presionar **F10** (Step Over) línea por línea → ver cómo busca el usuario y verifica password
-12. Presionar **F5** (Continue) → el login completa y el frontend recibe el JWT
+4. Poner breakpoint (F9) en la primera linea de `LoginAsync`
+5. En el navegador ir a http://localhost:5173 y hacer click en "Iniciar sesion"
+6. Escribir: email `admin@ecommercenet.com` / password `Admin123!`
+7. Click en "Iniciar sesion"
 
-### Flujo B — Ver catálogo de productos
+**VS Code se pausa automaticamente.**
 
-1. Poner breakpoint en `ProductosController.ObtenerTodos()`
-2. Poner breakpoint en `ProductoRepositorio.ObtenerActivosAsync()`
-3. En el navegador, ir a la página principal (http://localhost:5173)
-4. VS Code se pausa en ProductosController
-5. F11 → entras al repositorio
-6. Inspeccionar: productos (lista), verificar que Include cargó Categoria
-7. F5 → los productos aparecen en el frontend
+- Pasar el mouse sobre `dto` para ver el email y password que llego
+- F11 = entrar al metodo siguiente (vas a AuthServicio.LoginAsync)
+- F10 = ejecutar linea por linea (ves como busca el usuario en BD y verifica el password)
+- F5 = continuar hasta el proximo breakpoint (o hasta que termine)
 
-### Flujo C — Agregar al carrito (requiere estar logueado)
+---
 
-1. Primero hacer login (Flujo A sin breakpoints — solo F5 para continuar rápido)
-2. Poner breakpoints en:
-   - `CarritoController.Agregar()` — donde extrae el userId del JWT
-   - `CarritoServicio.AgregarProductoAsync()` — donde busca el producto
-   - `Carrito.AgregarProducto()` — la lógica de dominio
-3. En el frontend, click en "Agregar al carrito" en cualquier producto
-4. VS Code se pausa → inspeccionar paso a paso:
-   - ¿userId se extrajo correctamente del JWT?
-   - ¿El producto existe y tiene stock?
-   - ¿El carrito ya tenía este producto? (incrementa cantidad vs crea nuevo item)
+### Flujo B - Ver productos
 
-### Flujo D — Checkout completo (el más complejo)
+**Objetivo:** ver como el repositorio consulta la BD y devuelve los productos.
 
-1. Tener productos en el carrito (Flujo C)
-2. Poner breakpoints en:
-   - `CarritoController.Checkout()`
-   - `CarritoServicio.CheckoutAsync()` — CADA paso interno:
-     - a) Obtener carrito
-     - b) Verificar que no esté vacío
-     - c) Crear Orden
-     - d) Loop: crear OrdenDetalle + ReducirStock
-     - e) Vaciar carrito
-     - f) GuardarCambiosAsync
-3. Ir al carrito → Proceder al pago → Ingresar dirección → Confirmar
-4. VS Code se pausa → seguir paso a paso:
-   - En el loop de items: inspeccionar producto.Stock ANTES y DESPUÉS de ReducirStock
-   - En GuardarCambiosAsync: este es el momento donde TODO se guarda en BD — antes de F10 nada está guardado, después ya sí
-5. F5 → el frontend muestra "¡Compra realizada!"
+1. Abrir `src/EcommerceNet.API/Controllers/ProductosController.cs`
+2. Breakpoint en el metodo `ObtenerTodos`
+3. Abrir `src/EcommerceNet.Data/Repositorios/ProductoRepositorio.cs`
+4. Breakpoint en `ObtenerActivosAsync`
+5. Abrir http://localhost:5173 en el navegador (la pagina principal carga los productos)
 
-### Flujo E — Probar errores (breakpoint en el middleware)
+**VS Code se pausa en ProductosController.**
 
-1. Poner breakpoint en `ManejadorErroresMiddleware` en el `catch`
-2. En `.vscode/requests.http` o en Swagger, enviar request sin token a endpoint protegido:
-   `POST http://localhost:5152/api/carrito/agregar` (sin header Authorization)
-3. Esperar 401 → el middleware lo maneja
-4. Enviar datos inválidos: POST http://localhost:5152/api/productos con precio negativo
-5. Esperar 400 → ver cómo el controlador valida
+- F11 = entrar al repositorio
+- Inspeccionar la lista `productos` despues del await
+- F5 = los productos aparecen en el frontend
 
-## Paso 6: Probar con requests.http (sin frontend)
+---
 
-Si prefieres probar solo la API sin el frontend:
+### Flujo C - Agregar al carrito
+
+**Objetivo:** ver como el JWT del usuario se valida y como se actualiza el carrito.
+
+Primero hacer login sin breakpoints (F5 para continuar rapido en cada pausa).
+
+Luego poner breakpoints en:
+- `CarritoController.cs` -> metodo `Agregar` (primera linea)
+- `CarritoServicio.cs` -> metodo `AgregarProductoAsync` (primera linea)
+
+En el frontend: click en "Agregar al carrito" en cualquier producto.
+
+**VS Code se pausa.**
+
+Inspeccionar:
+- `userId` = el GUID del usuario extraido del JWT (viene del token en el header)
+- `productoId` = el producto que se quiere agregar
+- F11 para entrar al servicio y ver si ya existe ese item en el carrito
+
+---
+
+### Flujo D - Checkout completo
+
+**Objetivo:** ver la transaccion completa: crear orden, reducir stock, vaciar carrito.
+
+Poner breakpoints en `CarritoServicio.cs` -> metodo `CheckoutAsync`, en estas lineas:
+- Donde crea la `Orden`
+- El `foreach` que crea cada `OrdenDetalle`
+- La llamada a `ReducirStock`
+- La llamada a `GuardarCambiosAsync` al final
+
+En el frontend: agregar productos al carrito -> ir al carrito -> "Proceder al pago" -> confirmar.
+
+**Punto clave:** hasta que no llega a `GuardarCambiosAsync`, nada esta guardado en la BD.
+Despues de ese F10, ya todo existe en la base de datos.
+
+---
+
+### Flujo E - Probar errores (middleware)
+
+**Objetivo:** ver como el middleware captura excepciones y devuelve JSON de error.
+
+1. Abrir `src/EcommerceNet.API/Middleware/ManejadorErroresMiddleware.cs`
+2. Breakpoint en el bloque `catch`
+3. Abrir Swagger (http://localhost:5152/swagger)
+4. Intentar `GET /api/carrito` sin estar autenticado -> devuelve 401
+5. Intentar `POST /api/productos` con datos invalidos -> devuelve 400
+
+---
+
+## PROBAR LA API SIN FRONTEND (requests.http)
 
 1. Abrir `.vscode/requests.http` en VS Code
-2. La extensión REST Client muestra "Send Request" arriba de cada petición
+2. La extension REST Client muestra **Send Request** encima de cada peticion
 3. Ejecutar en orden:
-   - Primero: POST /auth/login → copiar el token de la respuesta
-   - Pegar el token en la variable `@token` del archivo
-   - Luego: los demás requests ya usan ese token automáticamente
+   - `POST /auth/login` -> copiar el token de la respuesta
+   - Pegar el token donde dice `@token = ...`
+   - Los demas requests usan ese token automaticamente
 
-## Resumen de teclas para debug
+---
 
-| Tecla | Qué hace |
-|-------|----------|
+## TECLAS DE DEBUG
+
+| Tecla | Accion |
+|-------|--------|
 | F5 | Iniciar debug / Continuar al siguiente breakpoint |
-| F9 | Poner/quitar breakpoint |
-| F10 | Step Over (ejecutar línea, no entrar a funciones) |
-| F11 | Step Into (entrar dentro de la función) |
-| Shift+F11 | Step Out (salir de la función actual) |
+| F9 | Poner o quitar breakpoint |
+| F10 | Step Over (ejecuta la linea sin entrar a la funcion) |
+| F11 | Step Into (entra dentro de la funcion) |
+| Shift+F11 | Step Out (sale de la funcion actual) |
 | Ctrl+Shift+F5 | Reiniciar debug |
 | Shift+F5 | Detener debug |
 
-## Troubleshooting
+---
 
-| Problema | Solución |
-|----------|---------|
-| 404 en localhost:5152/ | Normal — usar /swagger o /api/productos |
-| CORS error en consola | Verificar WithOrigins en Program.cs incluye http://localhost:5173 |
-| Breakpoint no se activa (círculo hueco) | Hacer dotnet build primero, luego F5 |
-| "Port already in use" | Cerrar la terminal anterior o matar proceso |
-| Frontend no carga productos | Verificar baseURL en api.js apunta a localhost:5152 |
-| Login falla con 401 | Verificar que la BD tiene el usuario admin (seed data) |
-| "Failed to determine https port" | Warning normal — la API corre en HTTP en desarrollo |
+## PROBLEMAS COMUNES
+
+| Problema | Solucion |
+|----------|----------|
+| 404 en localhost:5152/ | Normal - usar /swagger o /api/productos |
+| La pagina no carga nada (ERR_CONNECTION_REFUSED) | La API no esta corriendo - presionar F5 en VS Code |
+| CORS error en consola del navegador (F12) | Program.cs ya tiene configurado localhost:5173 |
+| Breakpoint no para (circulo hueco gris) | Ejecutar `dotnet build` en terminal, luego reiniciar debug |
+| "Port already in use" | Cerrar la terminal anterior o reiniciar VS Code |
+| Frontend no carga productos | Verificar que api.js tiene baseURL = http://localhost:5152/api |
+| Login devuelve 401 | La BD tiene el admin: admin@ecommercenet.com / Admin123! |
+| "Failed to determine https port" | Warning normal - ignorar, la API corre en HTTP |
+
+---
+
+## PUERTOS
+
+| Que | Puerto | URL |
+|-----|--------|-----|
+| API (backend) | 5152 | http://localhost:5152/swagger |
+| Frontend Vue.js | 5173 | http://localhost:5173 |
+| jQuery legacy | 5173 | http://localhost:5173/legacy.html |
