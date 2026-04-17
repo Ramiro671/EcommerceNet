@@ -51,7 +51,13 @@ AppDbContext query a SQL Server
 
 ## INICIO RAPIDO
 
-### 1. Arrancar la API
+> **Este proyecto tiene DOS procesos separados que deben correr al mismo tiempo.**
+> La API (backend .NET) y el frontend (Vue.js) son independientes.
+> Si solo corre uno, el sistema no funciona completo.
+
+### Proceso 1 — Arrancar la API (backend)
+
+**Terminal 1 — la que abre VS Code al presionar F5:**
 
 En VS Code:
 - Presionar **Ctrl+Shift+D** (panel Run and Debug)
@@ -59,8 +65,10 @@ En VS Code:
 - Presionar **F5**
 
 **SI BP-45 se activa primero:** es normal. Estas en Program.cs linea 157
-(`app.UseAuthentication()`). Presiona F5 para continuar.
-La app termina de iniciar cuando ves en la terminal:
+(`app.UseAuthentication()`). Es codigo de startup, no una peticion HTTP.
+Presiona F5 para continuar el arranque.
+
+Esperar hasta ver en la terminal integrada de VS Code:
 
 ```
 Now listening on: http://localhost:5152
@@ -68,19 +76,18 @@ Now listening on: http://localhost:5152
 
 La barra inferior de VS Code se pone **naranja** = debug activo.
 
-### 2. Verificar que funciona
-
-Abrir en el navegador: **http://localhost:5152/swagger**
-
+Verificar: abrir **http://localhost:5152/swagger** en el navegador.
 Si ves la interfaz de Swagger = API funcionando correctamente.
 
 **Por que 404 en localhost:5152/ ?**
 La API es solo un backend REST. No sirve paginas HTML.
 El unico HTML es el frontend en Vue.js (puerto 5173).
 
-### 3. Arrancar el frontend
+---
 
-Abrir una segunda terminal en VS Code (Ctrl+Shift+`):
+### Proceso 2 — Arrancar el frontend (Vue.js)
+
+**Terminal 2 — abrir una terminal nueva con Ctrl+Shift+` (acento grave):**
 
 ```bash
 cd src/EcommerceNet.Web
@@ -91,10 +98,42 @@ npm run dev
 Esperar hasta ver:
 
 ```
-Local: http://localhost:5173/
+  VITE v5.x.x  ready in ...ms
+
+  ➜  Local:   http://localhost:5173/
 ```
 
 Abrir: **http://localhost:5173**
+
+---
+
+### Como saber si ambos estan corriendo
+
+| Lo que ves | Que significa |
+|------------|---------------|
+| http://localhost:5173 muestra la tienda Y carga productos | Ambos procesos corren correctamente |
+| http://localhost:5173 muestra "Cargando productos..." y no carga | Frontend corre, API NO esta corriendo — iniciar Proceso 1 |
+| ERR_CONNECTION_REFUSED en localhost:5173 | Frontend NO esta corriendo — iniciar Proceso 2 |
+| ERR_CONNECTION_REFUSED en localhost:5152 | API NO esta corriendo — iniciar Proceso 1 |
+| Swagger abre pero frontend no carga productos | CORS o URL incorrecta en api.js |
+
+---
+
+### Por que no me redirige al login?
+
+Si al abrir http://localhost:5173 ves directamente el catalogo de productos
+(sin pasar por la pantalla de login), es porque el token del login anterior
+sigue guardado en el navegador (localStorage).
+
+El frontend lee el token de localStorage al iniciar. Si existe y no ha vencido,
+trata al usuario como autenticado directamente.
+
+Para forzar el login desde cero:
+1. Abrir las DevTools del navegador (F12)
+2. Ir a la pestana **Application** (Chrome) o **Storage** (Firefox)
+3. Expandir **Local Storage** → http://localhost:5173
+4. Borrar las entradas `jwt_token` y `usuario`
+5. Recargar la pagina — ahora si pedira login
 
 ---
 
@@ -423,8 +462,12 @@ la transaccion hace rollback y NADA queda guardado. Atomicidad garantizada.
 | Problema | Solucion |
 |----------|----------|
 | 404 en localhost:5152/ | Normal — usar /swagger o /api/productos |
-| ERR_CONNECTION_REFUSED | La API no esta corriendo — presionar F5 en VS Code |
-| BP-45 se activa al arrancar | Normal — presionar F5 para continuar el startup |
+| ERR_CONNECTION_REFUSED en localhost:5173 | Frontend no esta corriendo — abrir terminal y ejecutar `cd src/EcommerceNet.Web && npm run dev` |
+| ERR_CONNECTION_REFUSED en localhost:5152 | API no esta corriendo — Ctrl+Shift+D → "Debug API (.NET)" → F5 |
+| "Cargando productos..." y nunca carga | La API no esta corriendo — iniciar el backend (proceso 1) |
+| Pagina carga pero sin productos ni login | Solo un proceso corre — verificar que ambos esten activos |
+| No me redirige al login | Token anterior en localStorage — borrar con F12 → Application → Local Storage |
+| BP-45 se activa al arrancar | Normal — es startup de Program.cs, presionar F5 para continuar |
 | Breakpoint no para (circulo hueco gris) | Ejecutar `dotnet build` en terminal, luego reiniciar debug |
 | Breakpoint en controlador no se activa | La peticion no llego — verificar URL y metodo HTTP |
 | "Port already in use" | Cerrar la terminal anterior o reiniciar VS Code |
